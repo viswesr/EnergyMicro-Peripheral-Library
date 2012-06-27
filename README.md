@@ -1,7 +1,7 @@
 EnergyMicro-Peripheral-Library
 ==============================
 
-This is an unoffcial mirror of EnergyMicro(EM) Part specific header files, peripheral API (emlib). These files are available under a [Zlib style License](http://en.wikipedia.org/wiki/Zlib_License) from Energy Micro.
+Unofficial mirror of EnergyMicro(EM) Part specific header files, peripheral API (emlib). These files are available under a [Zlib style License](http://en.wikipedia.org/wiki/Zlib_License) from Energy Micro.
 
 1. Initial version downloaded from [Energy Micro CMSIS 3.0.0](http://cdn.energymicro.com/dl/packages/EM_CMSIS_3.0.0.zip)
 
