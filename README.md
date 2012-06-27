@@ -12,6 +12,8 @@ Unofficial mirror of EnergyMicro(EM) Part specific header files, peripheral API 
 Open Source Peripheral-Library for EFM32 MCUs SLOC
 --------------------------------------------------
 
+<pre>
+
 SLOC  Directory	SLOC-by-Language (Sorted)
 357399  Device          ansic=356879,asm=520
 12369   emlib           ansic=12369
@@ -23,4 +25,7 @@ asm:            520 (0.14%)
 Total Physical Source Lines of Code (SLOC)                = 369,768
 
 Generated using David A. Wheeler's 'SLOCCount'.
+
+</pre>
+
 
