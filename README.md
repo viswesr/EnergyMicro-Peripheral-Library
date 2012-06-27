@@ -9,3 +9,18 @@ Unofficial mirror of EnergyMicro(EM) Part specific header files, peripheral API 
 
 3. This repository forms basis for modifying EnergyMicro Peripheral Library for 100% Open Source License Compatible (i.e All CMSIS dependency needs to be reworked)
 
+Open Source Peripheral-Library for EFM32 MCUs SLOC
+--------------------------------------------------
+
+SLOC  Directory	SLOC-by-Language (Sorted)
+357399  Device          ansic=356879,asm=520
+12369   emlib           ansic=12369
+
+Totals grouped by language (dominant language first):
+ansic:       369248 (99.86%)
+asm:            520 (0.14%)
+
+Total Physical Source Lines of Code (SLOC)                = 369,768
+
+Generated using David A. Wheeler's 'SLOCCount'.
+
