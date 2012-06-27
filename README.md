@@ -9,8 +9,10 @@ Unofficial mirror of EnergyMicro(EM) Part specific header files, peripheral API 
 
 3. This repository forms basis for modifying EnergyMicro Peripheral Library for 100% Open Source License Compatible (i.e All CMSIS dependency needs to be reworked)
 
-Open Source Peripheral-Library for EFM32 MCUs SLOC
---------------------------------------------------
+
+Open Source Peripheral-Library for EFM32 MCUs : SLOC
+----------------------------------------------------
+Energy Micro is possibly the only ARM Cortex-M0/M3 MCU vendor whose peripheral drivers are available under a permissive open source license. This makes it ideal for Open Source Hardware projects. But, CMSIS dependency of emlib has to be reworked.
 
 <pre>
 
