@@ -2,7 +2,7 @@
  * @file
  * @brief Low Energy Sensor (LESENSE) peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -115,10 +115,10 @@ typedef enum
 typedef enum
 {
   /** Alternate excitation is mapped to the LES_ALTEX pins. */
-  lesenseAltExMapALTEX = LESENSE_CTRL_ALTEXMAP_ALTEX,
+  lesenseAltExMapALTEX = _LESENSE_CTRL_ALTEXMAP_ALTEX,
 
   /** Alternate excitation is mapped to the pins of the other ACMP. */
-  lesenseAltExMapACMP  = LESENSE_CTRL_ALTEXMAP_ACMP
+  lesenseAltExMapACMP  = _LESENSE_CTRL_ALTEXMAP_ACMP
 } LESENSE_AltExMap_TypeDef;
 
 
@@ -812,10 +812,11 @@ typedef struct
 typedef struct
 {
   /** Configure alternate excitation pins. If set, the corresponding alternate
-   *  excitation pin is enabled. */
+   *  excitation pin/signal is enabled. */
   bool                         enablePin;
 
-  /** Configure idle phase setup of alternate excitation pins. */
+  /** Configure idle phase setup of alternate excitation pins.
+   The idleConf parameter is not valid when altExMap==lesenseAltExMapACMP. */
   LESENSE_AltExPinIdle_TypeDef idleConf;
 
   /** Configure how to control the external alternate excitation pins. Only
@@ -823,7 +824,8 @@ typedef struct
   *  If true, the excitation happens on the corresponding alternate excitation
   *  pin during the excitation periods of all enabled channels.
   *  If false, the excitation happens on the corresponding alternate excitation
-  *  pin ONLY during the excitation period of the corresponding channel. */
+  *  pin ONLY during the excitation period of the corresponding channel.
+  *  The alwaysEx parameter is not valid when altExMap==lesenseAltExMapACMP. */
   bool                         alwaysEx;
 } LESENSE_AltExDesc_TypeDef;
 
@@ -834,9 +836,22 @@ typedef struct
   /** Select alternate excitation mapping. */
   LESENSE_AltExMap_TypeDef  altExMap;
 
-  /** Alternate excitation channel descriptors. */
-  LESENSE_AltExDesc_TypeDef AltEx[8];
+  /** Alternate excitation channel descriptors.
+   *  When altExMap==lesenseAltExMapALTEX only the 8 first descriptors are used.
+   *  In this mode they describe the configuration of the LES_ALTEX0-7 pins.
+   *  When altExMap==lesenseAltExMapACMP all 16 descriptors are used. In this
+   *  mode they describe the configuration of the 16 possible ACMP0-1 excitation
+   *  channels. Please refer to the user manual for a complete mapping of the
+   *  routing.
+   *  NOTE:
+   *  Some parameters in the descriptors are not valid when
+   *  altExMap==lesenseAltExMapACMP. Please refer to the definition of the
+   *  LESENSE_AltExDesc_TypeDef structure for details regarding which parameters
+   *  are valid. */
+  LESENSE_AltExDesc_TypeDef AltEx[16];
+
 } LESENSE_ConfAltEx_TypeDef;
+
 
 /** Default configuration for alternate excitation channel. */
 #define LESENSE_ALTEX_CH_CONF_DEFAULT                                          \
@@ -858,7 +873,15 @@ typedef struct
       LESENSE_ALTEX_CH_CONF_DEFAULT, /* Alternate excitation channel 4. */ \
       LESENSE_ALTEX_CH_CONF_DEFAULT, /* Alternate excitation channel 5. */ \
       LESENSE_ALTEX_CH_CONF_DEFAULT, /* Alternate excitation channel 6. */ \
-      LESENSE_ALTEX_CH_CONF_DEFAULT  /* Alternate excitation channel 7. */ \
+      LESENSE_ALTEX_CH_CONF_DEFAULT, /* Alternate excitation channel 7. */ \
+      LESENSE_ALTEX_CH_CONF_DEFAULT, /* Alternate excitation channel 8. */ \
+      LESENSE_ALTEX_CH_CONF_DEFAULT, /* Alternate excitation channel 9. */ \
+      LESENSE_ALTEX_CH_CONF_DEFAULT, /* Alternate excitation channel 10. */ \
+      LESENSE_ALTEX_CH_CONF_DEFAULT, /* Alternate excitation channel 11. */ \
+      LESENSE_ALTEX_CH_CONF_DEFAULT, /* Alternate excitation channel 12. */ \
+      LESENSE_ALTEX_CH_CONF_DEFAULT, /* Alternate excitation channel 13. */ \
+      LESENSE_ALTEX_CH_CONF_DEFAULT, /* Alternate excitation channel 14. */ \
+      LESENSE_ALTEX_CH_CONF_DEFAULT  /* Alternate excitation channel 15. */ \
     }                                                                      \
   }
 

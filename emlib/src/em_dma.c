@@ -2,7 +2,7 @@
  * @file
  * @brief Direct memory access (DMA) module peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -798,7 +798,7 @@ void DMA_CfgDescr(unsigned int channel,
 }
 
 
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
 /***************************************************************************//**
  * @brief Configure DMA channel for Loop mode or 2D transfer.
  *
@@ -843,6 +843,8 @@ void DMA_CfgLoop(unsigned int channel, DMA_CfgLoop_TypeDef *cfg)
  ******************************************************************************/
 void DMA_CfgRect(unsigned int channel, DMA_CfgRect_TypeDef *cfg)
 {
+  (void)channel;                            /* Unused parameter */
+
   EFM_ASSERT(channel == 0);
   EFM_ASSERT(cfg->dstStride <= 2047);
   EFM_ASSERT(cfg->srcStride <= 2047);

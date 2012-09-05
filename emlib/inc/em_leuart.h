@@ -3,7 +3,7 @@
  * @brief Low Energy Universal Asynchronous Receiver/Transmitter (LEUART)
  *   peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -148,7 +148,7 @@ void LEUART_BaudrateSet(LEUART_TypeDef *leuart,
                         uint32_t baudrate);
 void LEUART_Enable(LEUART_TypeDef *leuart, LEUART_Enable_TypeDef enable);
 void LEUART_FreezeEnable(LEUART_TypeDef *leuart, bool enable);
-void LEUART_Init(LEUART_TypeDef *leuart, LEUART_Init_TypeDef *init);
+void LEUART_Init(LEUART_TypeDef *leuart, LEUART_Init_TypeDef const *init);
 
 
 /***************************************************************************//**

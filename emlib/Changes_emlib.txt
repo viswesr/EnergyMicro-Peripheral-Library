@@ -1,4 +1,39 @@
 ================ Revision history ============================================
+3.0.1:
+ - LFXO fix for Giant family.
+ - USART: Fix for EFM32TG108Fxx which does not have USART0.
+ - EBI: The write to the CTRL register now happens before the ROUTE registers
+   are set. This avoids potential glitches.
+ - LESENSE: Fix issue when using lesenseAltExMapACMP.
+ - TIMER: Fix compilation on devices where ADC is not available.
+ - LCD: Fix bug where Aloc field would not be set to 0.
+ - BURTC: Fix Reset function by adding reset of COMP0 register and removing
+   reset of POWERDOWN register. The POWERDOWN register cannot be used to 
+   power up the blocks after it has been powered down.
+ - CMU: Fixed bug where ClockDivSet, ClockDivGet and ClockFreqGet didn't work for 
+   cmuClock_LCDpre clock. Also corrected 3 wrongly typed constants.
+ - CMU: Fixed bug where LFBE field in LFCLKSEL was not cleared before setting
+   bit-value.
+ - CMU: Fixed bug with CMU_ClockSelectGet. Did not give correct return value
+   for cmuClock_LFB.
+ - I2C: Fixed bug where I2C_Init would set divisor depending on the previous 
+   master/slave configuration, not the one set in the initialization.
+ - I2C: Fixed issue in the function I2C_BusFreqSet (called by I2C_Init). The
+   input parameter 'I2C_ClockHLR_TypeDef type' was not in use. The fix enables
+   the parameter to add support for 'i2cClockHLRAsymetric' and 'i2cClockHLRFast'
+   modes. In order to use 'i2cClockHLRAsymetric' and 'i2cClockHLRFast' the
+   frequency of the HFPER clock may need to be increased.
+ - OPAMP: Fixed bug in the function OPAMP_Enable where an incorrect register
+   was used when setting the OPA2 calibration value.
+ - LEUART: Fixed issue in LEUART_BaudrateSet when a high clock frequency and a
+   low baudrate can overflow the clock divisor register (CLKDIV). The fix uses
+   an assert statement to check whether the calculated clock divisor is out of
+   range.
+ - USART: Fixed issue in USART_BaudrateAsyncSet when a high clock frequency and
+   a low baudrate can overflow the clock divisor register (CLKDIV). The fix uses
+   an assert statement to check whether the calculated clock divisor is out of
+   range.
+
 3.0.0:
  - efm32lib renamed emlib, as it will include support for non-EFM32 devices
    in the future

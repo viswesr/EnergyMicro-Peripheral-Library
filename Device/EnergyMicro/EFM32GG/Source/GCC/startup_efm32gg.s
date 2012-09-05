@@ -1,7 +1,7 @@
-/* @file 
- * @brief startup file for Energy Micro 'EFM32GG/LG' devices. 
+/* @file
+ * @brief startup file for Energy Micro EFM32GG devices.
  *        For use with GCC for ARM Embedded Processors
- * @version 3.0.0
+ * @version 3.0.1
  * Date: 08 Feb 2012
  *
  * Copyright (c) 2012, ARM Limited
@@ -28,9 +28,6 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Energy Micro release version
- * @version 3.0.0
  */
     .syntax unified
     .arch armv7-m
@@ -172,11 +169,6 @@ Reset_Handler:
     str    r0, [r2, r3]
     bgt    .flash_to_ram_loop
 .flash_to_ram_loop_end:
-#endif
-
-#ifndef __NO_SYSTEM_INIT
-    ldr    r0, =SystemInit
-    blx    r0
 #endif
 
     ldr    r0, =_start

@@ -2,7 +2,7 @@
  * @file
  * @brief External Bus Iterface (EBI) peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -96,8 +96,8 @@ typedef enum
   ebiModeD16A16ALE = EBI_CTRL_MODE_D16A16ALE,
   /** 8 data bits, 24 address bits, using address latch enable */
   ebiModeD8A24ALE  = EBI_CTRL_MODE_D8A24ALE,
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
   /** Mode D16 */
-#if defined(_EFM32_GIANT_FAMILY)
   ebiModeD16       = EBI_CTRL_MODE_D16,
 #endif
 } EBI_Mode_TypeDef;
@@ -124,11 +124,11 @@ typedef enum
   ebiLineRE,
   /** Chip Select line */
   ebiLineCS,
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
   /** BL line */
   ebiLineBL,
 #endif
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
   /** TFT VSYNC line */
   ebiLineTFTVSync,
   /** TFT HSYNC line */
@@ -142,7 +142,7 @@ typedef enum
 #endif
 } EBI_Line_TypeDef;
 
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
 /** Address Pin Enable, lower limit - lower range of pins to enable */
 typedef enum
 {
@@ -157,7 +157,7 @@ typedef enum
 } EBI_ALow_TypeDef;
 
 /** Adress Pin Enable, high limit - higher limit of pins to enable */
-typedef enum 
+typedef enum
 {
   /** All EBI_A pins are disabled */
   ebiAHighA0 = EBI_ROUTE_APEN_A0,
@@ -218,14 +218,12 @@ typedef enum {
   /** EBI PIN I/O Location 1 */
   ebiLocation1 = EBI_ROUTE_LOCATION_LOC1,
   /** EBI PIN I/O Location 2 */
-  ebiLocation2 = EBI_ROUTE_LOCATION_LOC2,  
-  /** EBI PIN I/O Location 3 */
-  // ebiLocation3 = EBI_ROUTE_LOCATION_LOC3,  
+  ebiLocation2 = EBI_ROUTE_LOCATION_LOC2
 } EBI_Location_TypeDef;
 #endif
 
 /* TFT support */
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
 /** EBI TFT Graphics Bank Select */
 typedef enum
 {
@@ -328,7 +326,7 @@ typedef struct
   EBI_Polarity_TypeDef rePolarity;
   /** Chip Select pin polarity, active high or low */
   EBI_Polarity_TypeDef csPolarity;
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
   /** Byte Lane pin polaritym, active high or low */
   EBI_Polarity_TypeDef blPolarity;
   /** Flag to enable or disable Byte Lane support */
@@ -348,7 +346,7 @@ typedef struct
   int                  addrSetupCycles;
   /** Number of cycles address is driven onto the ADDRDAT bus before ALE is asserted */
   int                  addrHoldCycles;
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
   /** Enable or disables half cycle duration of the ALE strobe in the last address setup cycle */
   bool                 addrHalfALE;
 #endif
@@ -358,7 +356,7 @@ typedef struct
   int                  readStrobeCycles;
   /** Number of cycles CSn is held active after REn is deasserted */
   int                  readHoldCycles;
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
   /** Enable or disable page mode reads */
   bool                 readPageMode;
   /** Enables or disable prefetching from sequential addresses */
@@ -372,7 +370,7 @@ typedef struct
   int                  writeStrobeCycles;
   /** Number of cycles CSn is held active after WEn is deasserted */
   int                  writeHoldCycles;
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
   /** Enable or disable the write buffer */
   bool                 writeBufferDisable;
   /** Enables or disables half cycle duration of the WEn signal in the last strobe cycle */
@@ -389,7 +387,7 @@ typedef struct
 } EBI_Init_TypeDef;
 
 /** Default config for EBI init structures */
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
 #define EBI_INIT_DEFAULT                                 \
   {   ebiModeD8A8,      /* 8 bit address, 8 bit data */  \
       ebiActiveLow,     /* ARDY polarity */              \
@@ -447,7 +445,7 @@ typedef struct
   }
 #endif
 
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
 
 /** TFT Initialization structure */
 typedef struct
@@ -545,7 +543,7 @@ void EBI_Disable(void);
 uint32_t EBI_BankAddress(uint32_t bank);
 void EBI_BankEnable(uint32_t banks, bool enable);
 
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
 void EBI_TFTInit(const EBI_TFTInit_TypeDef *ebiTFTInit);
 void EBI_TFTSizeSet(uint32_t horizontal, uint32_t vertical);
 void EBI_TFTHPorchSet(int front, int back, int pulseWidth);
@@ -553,7 +551,7 @@ void EBI_TFTVPorchSet(int front, int back, int pulseWidth);
 void EBI_TFTTimingSet(int dclkPeriod, int start, int setup, int hold);
 #endif
 
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
 /* This functionality is only available on devices with independent timing support */
 void EBI_BankReadTimingSet(uint32_t bank, int setupCycles, int strobeCycles, int holdCycles);
 void EBI_BankReadTimingConfig(uint32_t bank, bool pageMode, bool prefetch, bool halfRE);
@@ -626,7 +624,7 @@ __STATIC_INLINE void EBI_TFTPixelSet(int pixel, uint32_t color)
  ******************************************************************************/
 __STATIC_INLINE void EBI_TFTMaskBlendMode(EBI_TFTMaskBlend_TypeDef maskBlend)
 {
-  EBI->TFTCTRL = (EBI->TFTCTRL & (~_EBI_TFTCTRL_MASKBLEND_MASK))|maskBlend;                  
+  EBI->TFTCTRL = (EBI->TFTCTRL & (~_EBI_TFTCTRL_MASKBLEND_MASK))|maskBlend;
 }
 
 
@@ -676,7 +674,7 @@ __STATIC_INLINE uint32_t EBI_TFTHCount(void)
 
 
 /***************************************************************************//**
- * @brief Set Frame Buffer Trigger  
+ * @brief Set Frame Buffer Trigger
  *   Frame buffer pointer will be updated either on each horizontal line (hsync)
  *   or vertical update (vsync)(
  ******************************************************************************/

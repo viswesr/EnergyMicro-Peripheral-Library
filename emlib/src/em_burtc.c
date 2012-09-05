@@ -2,7 +2,7 @@
  * @file
  * @brief Backup Real Time Counter (BURTC) Peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -237,7 +237,7 @@ void BURTC_Reset(void)
   BURTC->IEN       = _BURTC_IEN_RESETVALUE;
   BURTC->LPMODE    = _BURTC_LPMODE_RESETVALUE;
   BURTC->LFXOFDET  = _BURTC_LFXOFDET_RESETVALUE;
-  BURTC->POWERDOWN = _BURTC_POWERDOWN_RESETVALUE;
+  BURTC->COMP0     = _BURTC_COMP0_RESETVALUE;
   BURTC->FREEZE    = _BURTC_FREEZE_RESETVALUE;
 }
 

@@ -2,7 +2,7 @@
  * @file
  * @brief efm32g_devinfo Register and Bit Field definitions
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  ******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -129,7 +129,8 @@ typedef struct
 #define _DEVINFO_PART_DEVICE_FAMILY_GG             72           /**< Giant Gecko Device Family */
 #define _DEVINFO_PART_DEVICE_FAMILY_TG             73           /**< Tiny Gecko Device Family */
 #define _DEVINFO_PART_DEVICE_FAMILY_LG             74           /**< Leopard Gecko Device Family */
-#define _DEVINFO_PART_DEVICE_FAMILY_ZG             75           /**< Zero Gecko Device Family */
+#define _DEVINFO_PART_DEVICE_FAMILY_WG             75           /**< Wonder Gecko Device Family */
+#define _DEVINFO_PART_DEVICE_FAMILY_ZG             76           /**< Zero Gecko Device Family */
 #define _DEVINFO_PART_DEVICE_NUMBER_MASK           0x0000FFFFUL /**< Device number */
 #define _DEVINFO_PART_DEVICE_NUMBER_SHIFT          0            /**< Bit position for device number */
 

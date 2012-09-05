@@ -2,7 +2,7 @@
  * @file
  * @brief General Purpose IO (GPIO) peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -123,7 +123,7 @@ typedef enum
  ******************************************************************************/
 
 void GPIO_DbgLocationSet(unsigned int location);
-#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
 __STATIC_INLINE void GPIO_EM4SetPinRetention(bool enable);
 #endif
 
@@ -185,7 +185,7 @@ __STATIC_INLINE void GPIO_DbgSWOEnable(bool enable)
 void GPIO_DriveModeSet(GPIO_Port_TypeDef port, GPIO_DriveMode_TypeDef mode);
 
 
-#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
 /**************************************************************************//**
  * @brief
  *   Disable GPIO pin wake-up from EM4.

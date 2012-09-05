@@ -2,7 +2,7 @@
  * @file
  * @brief Timer/counter (TIMER) Peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -151,7 +151,7 @@ void TIMER_Init(TIMER_TypeDef *timer, const TIMER_Init_TypeDef *init)
     (init->quadModeX4             ?   TIMER_CTRL_QDM_X4    : 0) |
     (init->oneShot                ?   TIMER_CTRL_OSMEN     : 0) |
 
-#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY) || defined(_EFM32_WONDER_FAMILY)
     (init->count2x                ?   TIMER_CTRL_X2CNT     : 0) |
     (init->ati                    ?   TIMER_CTRL_ATI       : 0) |
 #endif

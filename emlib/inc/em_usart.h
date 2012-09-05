@@ -3,7 +3,7 @@
  * @brief Universal synchronous/asynchronous receiver/transmitter (USART/UART)
  *   peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -168,7 +168,7 @@ typedef enum
   usartIrDAPrsCh7 = USART_IRCTRL_IRPRSSEL_PRSCH7  /**< PRS channel 7 */
 } USART_IrDAPrsSel_Typedef;
 
-#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY) || defined(_EFM32_WONDER_FAMILY)
 /** I2S format selection. */
 typedef enum
 {
@@ -203,7 +203,7 @@ typedef enum
 #if defined(_EFM32_TINY_FAMILY)
   usartPrsRxCh7  = USART_INPUT_RXPRSSEL_PRSCH7     /**< PRSCH7  selected as USART_INPUT */
 
-#elif defined(_EFM32_GIANT_FAMILY)
+#elif defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   usartPrsRxCh7  = USART_INPUT_RXPRSSEL_PRSCH7,    /**< PRSCH7  selected as USART_INPUT */
   usartPrsRxCh8  = USART_INPUT_RXPRSSEL_PRSCH8,    /**< PRSCH8  selected as USART_INPUT */
   usartPrsRxCh9  = USART_INPUT_RXPRSSEL_PRSCH9,    /**< PRSCH9  selected as USART_INPUT */
@@ -215,7 +215,7 @@ typedef enum
 } USART_PrsRxCh_TypeDef;
 #endif
 
-#if defined (_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined (_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
 /** USART PRS Transmit Trigger Channels */
 typedef enum
 {
@@ -262,7 +262,7 @@ typedef struct
   /** Number of stopbits to use. */
   USART_Stopbits_TypeDef stopbits;
 
-#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   /** Majority Vote Disable for 16x, 8x and 6x oversampling modes. */
   bool                   mvdis;
 
@@ -274,11 +274,11 @@ typedef struct
 #endif
 } USART_InitAsync_TypeDef;
 
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
 /** USART PRS trigger enable */
 typedef struct 
 {
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   /** Enable AUTOTX */
   bool autoTxTriggerEnable;
 #endif
@@ -292,7 +292,7 @@ typedef struct
 #endif
 
 /** Default config for USART async init structure. */
-#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY) || defined(_EFM32_WONDER_FAMILY)
 #define USART_INITASYNC_DEFAULT                                                              \
   { usartEnable,      /* Enable RX/TX when init completed. */                                \
     0,                /* Use current configured reference clock for configuring baudrate. */ \
@@ -344,7 +344,7 @@ typedef struct
   /** Clock polarity/phase mode. */
   USART_ClockMode_TypeDef clockMode;
 
-#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   /** Enable USART Rx via PRS. */
   bool                    prsRxEnable;
 
@@ -358,7 +358,7 @@ typedef struct
 } USART_InitSync_TypeDef;
 
 /** Default config for USART sync init structure. */
-#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY) || defined(_EFM32_WONDER_FAMILY)
 #define USART_INITSYNC_DEFAULT                                                                \
   { usartEnable,       /* Enable RX/TX when init completed. */                                \
     0,                 /* Use current configured reference clock for configuring baudrate. */ \
@@ -429,7 +429,7 @@ typedef struct
   }
 
 
-#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY) || defined(_EFM32_WONDER_FAMILY)
 /** I2S mode init structure. Inherited from synchronous mode init structure */
 typedef struct
 {
@@ -499,7 +499,7 @@ void USART_InitAsync(USART_TypeDef *usart, const USART_InitAsync_TypeDef *init);
 void USART_InitSync(USART_TypeDef *usart, const USART_InitSync_TypeDef *init);
 void USART_InitIrDA(const USART_InitIrDA_TypeDef *init);
 
-#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY) || defined(_EFM32_WONDER_FAMILY)
 void USART_InitI2s(USART_TypeDef *usart, USART_InitI2s_TypeDef *init);
 void USART_InitPrsTrigger(USART_TypeDef *usart, const USART_PrsTriggerInit_TypeDef *init);
 #endif

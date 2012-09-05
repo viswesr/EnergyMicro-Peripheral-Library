@@ -1,9 +1,9 @@
 /**************************************************************************//**
  * @file
- * @brief CMSIS Cortex-M3 Peripheral Access Layer Header File
- *        for EFM EFM32GG280F1024
+ * @brief CMSIS Cortex-M Peripheral Access Layer Header File
+ *        for EFM32GG280F1024
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  ******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -176,6 +176,12 @@ typedef enum IRQn
 #define __CM3_REV            0x201          /**< Cortex-M3 Core revision r2p1 */
 #define PRS_CHAN_COUNT       12             /**< Number of PRS channels */
 #define DMA_CHAN_COUNT       12             /**< Number of DMA channels */
+
+/** AF channels connect the different on-chip peripherals with the af-mux */
+#define AFCHAN_MAX           163
+#define AFCHANLOC_MAX        7
+/** Analog AF channels */
+#define AFACHAN_MAX          53
 
 /* Part number capabilities */
 
@@ -551,7 +557,7 @@ typedef struct
  *****************************************************************************/
 
 /* Bit fields for CMU CTRL */
-#define _CMU_CTRL_RESETVALUE                        0x000C262CUL                                /**< Default value for CMU_CTRL */
+#define _CMU_CTRL_RESETVALUE                        0x000C062CUL                                /**< Default value for CMU_CTRL */
 #define _CMU_CTRL_MASK                              0x53FFFEEFUL                                /**< Mask for CMU_CTRL */
 #define _CMU_CTRL_HFXOMODE_SHIFT                    0                                           /**< Shift value for CMU_HFXOMODE */
 #define _CMU_CTRL_HFXOMODE_MASK                     0x3UL                                       /**< Bit mask for CMU_HFXOMODE */
@@ -613,11 +619,11 @@ typedef struct
 #define CMU_CTRL_LFXOBOOST                          (0x1UL << 13)                               /**< LFXO Start-up Boost Current */
 #define _CMU_CTRL_LFXOBOOST_SHIFT                   13                                          /**< Shift value for CMU_LFXOBOOST */
 #define _CMU_CTRL_LFXOBOOST_MASK                    0x2000UL                                    /**< Bit mask for CMU_LFXOBOOST */
+#define _CMU_CTRL_LFXOBOOST_DEFAULT                 0x00000000UL                                /**< Mode DEFAULT for CMU_CTRL */
 #define _CMU_CTRL_LFXOBOOST_70PCENT                 0x00000000UL                                /**< Mode 70PCENT for CMU_CTRL */
-#define _CMU_CTRL_LFXOBOOST_DEFAULT                 0x00000001UL                                /**< Mode DEFAULT for CMU_CTRL */
 #define _CMU_CTRL_LFXOBOOST_100PCENT                0x00000001UL                                /**< Mode 100PCENT for CMU_CTRL */
-#define CMU_CTRL_LFXOBOOST_70PCENT                  (_CMU_CTRL_LFXOBOOST_70PCENT << 13)         /**< Shifted mode 70PCENT for CMU_CTRL */
 #define CMU_CTRL_LFXOBOOST_DEFAULT                  (_CMU_CTRL_LFXOBOOST_DEFAULT << 13)         /**< Shifted mode DEFAULT for CMU_CTRL */
+#define CMU_CTRL_LFXOBOOST_70PCENT                  (_CMU_CTRL_LFXOBOOST_70PCENT << 13)         /**< Shifted mode 70PCENT for CMU_CTRL */
 #define CMU_CTRL_LFXOBOOST_100PCENT                 (_CMU_CTRL_LFXOBOOST_100PCENT << 13)        /**< Shifted mode 100PCENT for CMU_CTRL */
 #define _CMU_CTRL_HFCLKDIV_SHIFT                    14                                          /**< Shift value for CMU_HFCLKDIV */
 #define _CMU_CTRL_HFCLKDIV_MASK                     0x1C000UL                                   /**< Bit mask for CMU_HFCLKDIV */
@@ -2033,7 +2039,6 @@ typedef struct
  * @{
  *****************************************************************************/
 
-#include "efm32gg_af_channels.h"
 #include "efm32gg_af_ports.h"
 #include "efm32gg_af_pins.h"
 

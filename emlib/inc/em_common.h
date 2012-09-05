@@ -2,7 +2,7 @@
  * @file
  * @brief EFM32 general purpose utilities.
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -65,11 +65,12 @@ extern "C" {
 #define EFM32_PACK_END()    _Pragma( "pack()" )
 #define __attribute__(...)
 
-/** Macros for handling aligned structs. */
 #ifdef __CC_ARM
+/** Macros for handling aligned structs. */
 #define EFM32_ALIGN(X) __align(X)
 #endif
 #ifdef __ICCARM__
+/** Macros for handling aligned structs. */
 #define EFM32_ALIGN(X) _Pragma( STRINGIZE( data_alignment=##X## ) )
 #endif
 

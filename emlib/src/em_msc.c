@@ -2,7 +2,7 @@
  * @file
  * @brief Flash controller (MSC) Peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -31,7 +31,7 @@
  *
  ******************************************************************************/
 #include "em_msc.h"
-#if defined (_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined (_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
 #include "em_cmu.h"
 #endif
 #include "em_assert.h"
@@ -60,7 +60,7 @@
  ******************************************************************************/
 void MSC_Init(void)
 {
-#if defined (_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined (_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   uint32_t freq, cycles;
 #endif
   /* Enable writing to the MSC */
@@ -70,7 +70,7 @@ void MSC_Init(void)
   /* Disable writing to the MSC */
   MSC->WRITECTRL &= ~MSC_WRITECTRL_WREN;
 
-#if defined (_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined (_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   /* Configure MSC->TIMEBASE according to selected frequency */
   freq = CMU_ClockFreqGet(cmuClock_AUX);
 
@@ -327,7 +327,7 @@ msc_Return_TypeDef MSC_WriteWord(uint32_t *address, void const *data, int numByt
 #endif
 
 
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
 /***************************************************************************//**
  * @brief
  *   Erase entire flash in one operation

@@ -1,9 +1,9 @@
 /**************************************************************************//**
  * @file
- * @brief CMSIS Cortex-M3 Peripheral Access Layer Header File
- *        for EFM EFM32GG980F1024
+ * @brief CMSIS Cortex-M Peripheral Access Layer Header File
+ *        for EFM32GG980F1024
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  ******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -178,6 +178,12 @@ typedef enum IRQn
 #define __CM3_REV            0x201          /**< Cortex-M3 Core revision r2p1 */
 #define PRS_CHAN_COUNT       12             /**< Number of PRS channels */
 #define DMA_CHAN_COUNT       12             /**< Number of DMA channels */
+
+/** AF channels connect the different on-chip peripherals with the af-mux */
+#define AFCHAN_MAX           163
+#define AFCHANLOC_MAX        7
+/** Analog AF channels */
+#define AFACHAN_MAX          53
 
 /* Part number capabilities */
 
@@ -435,7 +441,6 @@ typedef enum IRQn
  * @{
  *****************************************************************************/
 
-#include "efm32gg_af_channels.h"
 #include "efm32gg_af_ports.h"
 #include "efm32gg_af_pins.h"
 

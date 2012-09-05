@@ -6,7 +6,7 @@ libraries for the Energy Micro microcontrollers and RF transceivers/SoCs.
 ================ About CMSIS =================================================
 
 The library and header files are based on CMSIS, the Cortex Microcontroller 
-Software Interface Standard, as defined by ARM Inc. 
+Software Interface Standard, as defined by ARM Ltd. 
 
 For more information about the CMSIS standard in itself see 
     http://www.onarm.com/cmsis
@@ -57,7 +57,7 @@ toggle, you should enable it for your projects.
 Short getting started guide:
 
 The quickest way to start is to base your work on one of the simple example
-projects for the Energy Micro Development or Stareter Kits. These should be 
+projects for the Energy Micro Development or Starter Kits. These should be 
 easy to port and change to adopt to your needs.
 
 The board support packages for the various Energy Micro kits comes with a
@@ -65,7 +65,8 @@ The board support packages for the various Energy Micro kits comes with a
 
 Please note that you _will_ need to change the "Debugger" and "Flash/Download"
 configuration settings to fit your environment. See your IDE's manual for 
-details.
+details. You might also need to change the limits of the linker file to adopt
+to your part's SRAM and flash size limits.
 
 Support for the Energy Micro devices family is located in the directory
   Device/EnergyMicro/<FAMILY>, 
@@ -86,9 +87,10 @@ at the examples for usage.
 
 ================ Licenses ====================================================
 
-See the top of each file for SW license. Basically you are free to use the
-Energy Micro code for any project using our devices. Part of the CMSIS
-library is copyrighted by ARM Inc. See "License.doc" for ARM's CMSIS license.
+See the top of each file for software license. The complete CMSIS folder and 
+libraries is copyrighted by ARM Ltd. See the file
+  CMSIS/CMSIS END USER LICENSE AGREEMENT.pdf
+for ARM's CMSIS license.
 
 ================ Software updates ============================================
 

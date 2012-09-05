@@ -2,7 +2,7 @@
  * @file
  * @brief Liquid Crystal Display (LCD) peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -68,7 +68,7 @@ typedef enum
   lcdMuxTriplex    = LCD_DISPCTRL_MUX_TRIPLEX,
   /** Quadruplex / 1/4 Duty cycle (segments can be multiplexed with LCD_COM[0:3]) */
   lcdMuxQuadruplex = LCD_DISPCTRL_MUX_QUADRUPLEX,
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
   /** Sextaplex / 1/6 Duty cycle (segments can be multiplexed with LCD_COM[0:5]) */
   lcdMuxSextaplex  = LCD_DISPCTRL_MUXE_MUXE | LCD_DISPCTRL_MUX_DUPLEX,
   /** Octaplex / 1/6 Duty cycle (segments can be multiplexed with LCD_COM[0:5]) */
@@ -85,7 +85,7 @@ typedef enum
   lcdBiasOneHalf   = LCD_DISPCTRL_BIAS_ONEHALF,
   /** 1/3 Bias (4 levels) */
   lcdBiasOneThird  = LCD_DISPCTRL_BIAS_ONETHIRD,
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
   /** 1/4 Bias (5 levels) */
   lcdBiasOneFourth = LCD_DISPCTRL_BIAS_ONEFOURTH,
 #endif
@@ -163,7 +163,7 @@ typedef enum
   /** Select all segment lines */
   lcdSegmentAll   = (0x003f)
 #endif
-#if defined(_EFM32_GECKO_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GECKO_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
   /** Select segment lines 24 to 27 */
   lcdSegment24_27 = (1 << 6),
   /** Select segment lines 28 to 31 */
@@ -228,7 +228,7 @@ typedef struct
   LCD_AnimShift_TypeDef BShift;
   /** A and B Logical Operation to use for mixing and outputting resulting segments */
   LCD_AnimLogic_TypeDef animLogic;
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
   /** Number of first segment to animate. Options are 0 or 8 for Giant/Leopard. End is startSeg+7 */
   int                   startSeg;
 #endif
@@ -285,13 +285,13 @@ void LCD_AnimInit(const LCD_AnimInit_TypeDef *animInit);
 void LCD_SegmentRangeEnable(LCD_SegmentRange_TypeDef segment, bool enable);
 void LCD_SegmentSet(int com, int bit, bool enable);
 void LCD_SegmentSetLow(int com, uint32_t mask, uint32_t bits);
-#if defined(_EFM32_GECKO_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GECKO_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
 void LCD_SegmentSetHigh(int com, uint32_t mask, uint32_t bits);
 #endif
 void LCD_ContrastSet(int level);
 void LCD_VBoostSet(LCD_VBoostLevel_TypeDef vboost);
 
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
 void LCD_BiasSegmentSet(int segment, int biasLevel);
 void LCD_BiasComSet(int com, int biasLevel);
 #endif
@@ -312,7 +312,7 @@ __STATIC_INLINE void LCD_IntSet(uint32_t flags);
 __STATIC_INLINE void LCD_IntEnable(uint32_t flags);
 __STATIC_INLINE void LCD_IntDisable(uint32_t flags);
 __STATIC_INLINE void LCD_IntClear(uint32_t flags);
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
 __STATIC_INLINE void LCD_DSCEnable(bool enable);
 #endif
 
@@ -597,7 +597,7 @@ __STATIC_INLINE void LCD_IntClear(uint32_t flags)
 }
 
 
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
 /***************************************************************************//**
  * @brief
  *   Enable or disable LCD Direct Segment Control

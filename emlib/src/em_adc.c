@@ -2,7 +2,7 @@
  * @file
  * @brief Analog to Digital Converter (ADC) Peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -501,7 +501,7 @@ uint8_t ADC_TimebaseCalc(uint32_t hfperFreq)
       hfperFreq = 1;
     }
   }
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   /* Handle errata on Giant Gecko, max TIMEBASE is 5 bits wide or max 0x1F */
   /* cycles. This will give a warmp up time of e.g. 0.645us, not the       */
   /* required 1us when operating at 48MHz. One must also increase acqTime  */

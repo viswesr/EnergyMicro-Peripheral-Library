@@ -2,7 +2,7 @@
  * @file
  * @brief Energy Management Unit (EMU) Peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -384,7 +384,7 @@ void EMU_UpdateOscConfig(void)
 }
 
 
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
 /***************************************************************************//**
  * @brief
  *   Update EMU module with Energy Mode 4 configuration

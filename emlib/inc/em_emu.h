@@ -2,7 +2,7 @@
  * @file
  * @brief Energy management unit (EMU) peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -55,7 +55,7 @@ extern "C" {
  ********************************   ENUMS   ************************************
  ******************************************************************************/
 
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
 /** EM4 duty oscillator */
 typedef enum
 {
@@ -122,7 +122,7 @@ typedef enum
  *******************************   STRUCTS   ***********************************
  ******************************************************************************/
 
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)  
 /** Energy Mode 4 initialization structure  */
 typedef struct 
 {
@@ -211,7 +211,7 @@ void EMU_EnterEM3(bool restore);
 void EMU_EnterEM4(void);
 void EMU_MemPwrDown(uint32_t blocks);
 void EMU_UpdateOscConfig(void);
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
 void EMU_EM4Init(EMU_EM4Init_TypeDef *em4init);
 void EMU_BUPDInit(EMU_BUPDInit_TypeDef *bupdInit);
 void EMU_BUThresholdSet(EMU_BODMode_TypeDef mode, uint32_t value);

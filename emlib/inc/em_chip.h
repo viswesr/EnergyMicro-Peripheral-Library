@@ -2,7 +2,7 @@
  * @file
  * @brief Chip Initialization API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -61,7 +61,6 @@ extern "C" {
  *****************************************************************************/
 __STATIC_INLINE void CHIP_Init(void)
 {
-  /* Currently only run time changes for Gecko devices */
 #if defined(_EFM32_GECKO_FAMILY)
   uint32_t                    rev;
   SYSTEM_ChipRevision_TypeDef chipRev;
@@ -151,6 +150,21 @@ __STATIC_INLINE void CHIP_Init(void)
     /* Turn off ADC/DAC clocks */
     reg   = (volatile uint32_t *)0x400C8044UL;
     *reg &= ~(1 << 14 | 1 << 11);
+  }
+#endif
+
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
+  uint32_t                    rev;
+  SYSTEM_ChipRevision_TypeDef chipRev;
+
+  rev = *(volatile uint32_t *)(0x0FE081FC);
+  SYSTEM_ChipRevisionGet(&chipRev);
+
+  if (((rev >> 24) == 16) && (chipRev.minor == 3))
+  {
+    /* This fixes an issue with the LFXO on high temperatures. */
+    *(volatile uint32_t*)0x400C80C0 =
+                      ( *(volatile uint32_t*)0x400C80C0 & ~(1<<6) ) | (1<<4);
   }
 #endif
 }

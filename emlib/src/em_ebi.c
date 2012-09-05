@@ -2,7 +2,7 @@
  * @file
  * @brief External Bus Interface (EBI) Peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -61,7 +61,7 @@ void EBI_Init(const EBI_Init_TypeDef *ebiInit)
 {
   uint32_t ctrl = EBI->CTRL;
 
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   /* Enable Independent Timing for devices that supports it */
   ctrl |= EBI_CTRL_ITS;
 
@@ -91,7 +91,7 @@ void EBI_Init(const EBI_Init_TypeDef *ebiInit)
 #endif
 
   /* Configure EBI mode and control settings  */
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   if (ebiInit->banks & EBI_BANK0)
   {
     ctrl &= ~(_EBI_CTRL_MODE_MASK|
@@ -197,7 +197,7 @@ void EBI_Init(const EBI_Init_TypeDef *ebiInit)
 #endif
 
   /* Configure timing */
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   EBI_BankReadTimingSet(ebiInit->banks,
                         ebiInit->readSetupCycles,
                         ebiInit->readStrobeCycles,
@@ -229,6 +229,9 @@ void EBI_Init(const EBI_Init_TypeDef *ebiInit)
                        ebiInit->addrHoldCycles);
 #endif
 
+  /* Activate new configuration */
+  EBI->CTRL = ctrl;  
+
   /* Configure Adress Latch Enable */
   switch (ebiInit->mode)
   {
@@ -237,7 +240,7 @@ void EBI_Init(const EBI_Init_TypeDef *ebiInit)
     /* Address Latch Enable */
     BITBAND_Peripheral(&(EBI->ROUTE), _EBI_ROUTE_ALEPEN_SHIFT, 1);
     break;
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   case ebiModeD16:
 #endif
   case ebiModeD8A8:
@@ -245,7 +248,7 @@ void EBI_Init(const EBI_Init_TypeDef *ebiInit)
     BITBAND_Peripheral(&(EBI->ROUTE), _EBI_ROUTE_ALEPEN_SHIFT, 0);
     break;
   }
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   /* Limit pin enable */
   EBI->ROUTE = (EBI->ROUTE & ~_EBI_ROUTE_ALB_MASK) | ebiInit->aLow;
   EBI->ROUTE = (EBI->ROUTE & ~_EBI_ROUTE_APEN_MASK) | ebiInit->aHigh;
@@ -263,9 +266,6 @@ void EBI_Init(const EBI_Init_TypeDef *ebiInit)
 
   /* Enable chip select lines */
   EBI_ChipSelectEnable(ebiInit->csLines, true);
-
-  /* Activate new configuration */
-  EBI->CTRL = ctrl;  
 }
 
 
@@ -325,7 +325,7 @@ void EBI_BankEnable(uint32_t banks, bool enable)
  ******************************************************************************/
 uint32_t EBI_BankAddress(uint32_t bank)
 {
-#if defined (_EFM32_GIANT_FAMILY)
+#if defined (_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   if(EBI->CTRL & EBI_CTRL_ALTMAP)
   {
     switch (bank)
@@ -430,7 +430,7 @@ void EBI_PolaritySet(EBI_Line_TypeDef line, EBI_Polarity_TypeDef polarity)
   case ebiLineCS:
     BITBAND_Peripheral(&(EBI->POLARITY), _EBI_POLARITY_CSPOL_SHIFT, polarity);
     break;
-#if defined (_EFM32_GIANT_FAMILY)
+#if defined (_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   case ebiLineBL:
     BITBAND_Peripheral(&(EBI->POLARITY), _EBI_POLARITY_BLPOL_SHIFT, polarity);
     break;
@@ -555,7 +555,7 @@ void EBI_AddressTimingSet(int setupCycles, int holdCycles)
                        _EBI_ADDRTIMING_ADDRHOLD_MASK)) | addressLatchTiming;
 }
 
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
 /***************************************************************************//**
  * @brief
  *   Configure and initialize TFT Direct Drive
@@ -708,7 +708,7 @@ void EBI_TFTTimingSet(int dclkPeriod, int start, int setup, int hold)
 }
 #endif
 
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
 /***************************************************************************//**
  * @brief
  *   Configure read operation parameters for selected bank
@@ -1042,7 +1042,7 @@ void EBI_BankPolaritySet(uint32_t banks, EBI_Line_TypeDef line, EBI_Polarity_Typ
 
   while (banks)
   {
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
     if (banks & EBI_BANK0)
     {
       polRegister = &EBI->POLARITY;
@@ -1086,7 +1086,7 @@ void EBI_BankPolaritySet(uint32_t banks, EBI_Line_TypeDef line, EBI_Polarity_Typ
     case ebiLineCS:
       BITBAND_Peripheral(polRegister, _EBI_POLARITY_CSPOL_SHIFT, polarity);
       break;
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
     case ebiLineBL:
       BITBAND_Peripheral(polRegister, _EBI_POLARITY_BLPOL_SHIFT, polarity);
       break;

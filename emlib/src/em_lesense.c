@@ -2,7 +2,7 @@
  * @file
  * @brief Low Energy Sensor (LESENSE) Peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -582,7 +582,7 @@ void LESENSE_ChannelConfig(LESENSE_ChDesc_TypeDef const *confCh,
 
 /***************************************************************************//**
  * @brief
- *   Configure the LESENSE alternate excitation pins.
+ *   Configure the LESENSE alternate excitation modes.
  *
  * @details
  *   This function configures the alternate excitation channels of the LESENSE
@@ -610,27 +610,48 @@ void LESENSE_AltExConfig(LESENSE_ConfAltEx_TypeDef const *confAltEx)
                      _LESENSE_CTRL_ALTEXMAP_SHIFT,
                      (uint32_t)confAltEx->altExMap);
 
-  /* Iterate through all the 8 alternate excitation channels */
-  for (i = 0U; i < 8U; ++i)
+  switch (confAltEx->altExMap)
   {
-    /* Enable/disable alternate excitation pin i.
-     * Atomic read-modify-write using BITBAND_Peripheral function in order to
-     * support reconfiguration during LESENSE operation. */
-    BITBAND_Peripheral(&(LESENSE->ROUTE),
-                       (16UL + i),
-                       (uint32_t)confAltEx->AltEx[i].enablePin);
+  case lesenseAltExMapALTEX:
+    /* Iterate through the 8 possible alternate excitation pin descriptors. */
+    for (i = 0U; i < 8U; ++i)
+    {
+      /* Enable/disable alternate excitation pin i.
+       * Atomic read-modify-write using BITBAND_Peripheral function in order to
+       * support reconfiguration during LESENSE operation. */
+      BITBAND_Peripheral(&(LESENSE->ROUTE),
+                         (16UL + i),
+                         (uint32_t)confAltEx->AltEx[i].enablePin);
+ 
+      /* Setup the idle phase state of alternate excitation pin i.
+       * Read-modify-write in order to support reconfiguration during LESENSE
+       * operation. */
+      tmp                = (LESENSE->ALTEXCONF & ~((uint32_t)0x3UL << (i * 2UL)));
+      tmp               |= ((uint32_t)confAltEx->AltEx[i].idleConf << (i * 2UL));
+      LESENSE->ALTEXCONF = tmp;
+      
+      /* Enable/disable always excite on channel i */
+      BITBAND_Peripheral(&(LESENSE->ALTEXCONF),
+                         (16UL + i),
+                         (uint32_t)confAltEx->AltEx[i].alwaysEx);
+    }
+    break;
 
-    /* Setup the idle phase state of alternate excitation pin i.
-     * Read-modify-write in order to support reconfiguration during LESENSE
-     * operation. */
-    tmp                = (LESENSE->ALTEXCONF & ~((uint32_t)0x3UL << (i * 2UL)));
-    tmp               |= ((uint32_t)confAltEx->AltEx[i].idleConf << (i * 2UL));
-    LESENSE->ALTEXCONF = tmp;
-
-    /* Enable/disable always excite on channel i */
-    BITBAND_Peripheral(&(LESENSE->ALTEXCONF),
-                       (16UL + i),
-                       (uint32_t)confAltEx->AltEx[i].alwaysEx);
+  case lesenseAltExMapACMP:
+    /* Iterate through all the 16 alternate excitation channels */
+    for (i = 0U; i < 16U; ++i)
+    {
+      /* Enable/disable alternate ACMP excitation channel pin i. */
+      /* Atomic read-modify-write using BITBAND_Peripheral function in order to
+       * support reconfiguration during LESENSE operation. */
+      BITBAND_Peripheral(&(LESENSE->ROUTE),
+                         i,
+                         (uint32_t)confAltEx->AltEx[i].enablePin);
+    }
+    break;
+  default:
+    /* Illegal value. */
+    EFM_ASSERT(0);
   }
 }
 

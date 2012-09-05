@@ -3,7 +3,7 @@
  * @brief CMSIS Cortex-M3 Peripheral Access Layer Header File
  *        for EFM EFM32TG110F32
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  ******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -150,60 +150,68 @@ typedef enum IRQn
 #define PRS_CHAN_COUNT       8              /**< Number of PRS channels */
 #define DMA_CHAN_COUNT       8              /**< Number of DMA channels */
 
+/** AF channels connect the different on-chip peripherals with the af-mux */
+#define AFCHAN_MAX           63
+#define AFCHANLOC_MAX        7
+/** Analog AF channels */
+#define AFACHAN_MAX          47
+
 /* Part number capabilities */
 
-#define TIMER_PRESENT        /**< TIMER is available in this part */
-#define TIMER_COUNT        2 /**< 2 TIMERs available  */
-#define USART_PRESENT        /**< USART is available in this part */
-#define USART_COUNT        2 /**< 2 USARTs available  */
-#define LEUART_PRESENT       /**< LEUART is available in this part */
-#define LEUART_COUNT       1 /**< 1 LEUARTs available  */
-#define LETIMER_PRESENT      /**< LETIMER is available in this part */
-#define LETIMER_COUNT      1 /**< 1 LETIMERs available  */
-#define PCNT_PRESENT         /**< PCNT is available in this part */
-#define PCNT_COUNT         1 /**< 1 PCNTs available  */
-#define I2C_PRESENT          /**< I2C is available in this part */
-#define I2C_COUNT          1 /**< 1 I2Cs available  */
-#define ADC_PRESENT          /**< ADC is available in this part */
-#define ADC_COUNT          1 /**< 1 ADCs available  */
-#define DAC_PRESENT          /**< DAC is available in this part */
-#define DAC_COUNT          1 /**< 1 DACs available  */
-#define ACMP_PRESENT         /**< ACMP is available in this part */
-#define ACMP_COUNT         2 /**< 2 ACMPs available  */
+#define TIMER_PRESENT         /**< TIMER is available in this part */
+#define TIMER_COUNT         2 /**< 2 TIMERs available  */
+#define USART_PRESENT         /**< USART is available in this part */
+#define USART_COUNT         2 /**< 2 USARTs available  */
+#define LEUART_PRESENT        /**< LEUART is available in this part */
+#define LEUART_COUNT        1 /**< 1 LEUARTs available  */
+#define LETIMER_PRESENT       /**< LETIMER is available in this part */
+#define LETIMER_COUNT       1 /**< 1 LETIMERs available  */
+#define PCNT_PRESENT          /**< PCNT is available in this part */
+#define PCNT_COUNT          1 /**< 1 PCNTs available  */
+#define I2C_PRESENT           /**< I2C is available in this part */
+#define I2C_COUNT           1 /**< 1 I2Cs available  */
+#define ADC_PRESENT           /**< ADC is available in this part */
+#define ADC_COUNT           1 /**< 1 ADCs available  */
+#define DAC_PRESENT           /**< DAC is available in this part */
+#define DAC_COUNT           1 /**< 1 DACs available  */
+#define ACMP_PRESENT          /**< ACMP is available in this part */
+#define ACMP_COUNT          2 /**< 2 ACMPs available  */
 #define LE_PRESENT
-#define LE_COUNT           1
+#define LE_COUNT            1
 #define MSC_PRESENT
-#define MSC_COUNT          1
+#define MSC_COUNT           1
 #define EMU_PRESENT
-#define EMU_COUNT          1
+#define EMU_COUNT           1
 #define RMU_PRESENT
-#define RMU_COUNT          1
+#define RMU_COUNT           1
 #define CMU_PRESENT
-#define CMU_COUNT          1
+#define CMU_COUNT           1
 #define AES_PRESENT
-#define AES_COUNT          1
+#define AES_COUNT           1
 #define LESENSE_PRESENT
-#define LESENSE_COUNT      1
+#define LESENSE_COUNT       1
 #define GPIO_PRESENT
-#define GPIO_COUNT         1
+#define GPIO_COUNT          1
 #define PRS_PRESENT
-#define PRS_COUNT          1
+#define PRS_COUNT           1
 #define DMA_PRESENT
-#define DMA_COUNT          1
+#define DMA_COUNT           1
 #define OPAMP_PRESENT
-#define OPAMP_COUNT        1
+#define OPAMP_COUNT         1
 #define VCMP_PRESENT
-#define VCMP_COUNT         1
+#define VCMP_COUNT          1
 #define RTC_PRESENT
-#define RTC_COUNT          1
+#define RTC_COUNT           1
 #define HFXTAL_PRESENT
-#define HFXTAL_COUNT       1
+#define HFXTAL_COUNT        1
 #define LFXTAL_PRESENT
-#define LFXTAL_COUNT       1
+#define LFXTAL_COUNT        1
 #define WDOG_PRESENT
-#define WDOG_COUNT         1
+#define WDOG_COUNT          1
 #define DBG_PRESENT
-#define DBG_COUNT          1
+#define DBG_COUNT           1
+#define BOOTLOADER_PRESENT
+#define BOOTLOADER_COUNT    1
 
 #include "core_cm3.h"       /* Cortex-M3 processor and core peripherals */
 #include "system_efm32tg.h" /* System Header */
@@ -1364,7 +1372,6 @@ typedef struct
  * @{
  *****************************************************************************/
 
-#include "efm32tg_af_channels.h"
 #include "efm32tg_af_ports.h"
 #include "efm32tg_af_pins.h"
 

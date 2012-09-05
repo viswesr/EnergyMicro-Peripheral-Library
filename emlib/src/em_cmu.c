@@ -2,7 +2,7 @@
  * @file
  * @brief Clock management unit (CMU) Peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -89,7 +89,7 @@ static void CMU_FlashWaitStateMax(void)
   {
   case MSC_READCTRL_MODE_WS1:
   case MSC_READCTRL_MODE_WS0:
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   case MSC_READCTRL_MODE_WS2:
     cfg = (cfg & ~_MSC_READCTRL_MODE_MASK) | MSC_READCTRL_MODE_WS2;
 #else
@@ -98,7 +98,7 @@ static void CMU_FlashWaitStateMax(void)
     break;
   case MSC_READCTRL_MODE_WS1SCBTP:
   case MSC_READCTRL_MODE_WS0SCBTP:
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   case MSC_READCTRL_MODE_WS2SCBTP:
     cfg = (cfg & ~_MSC_READCTRL_MODE_MASK) | MSC_READCTRL_MODE_WS2SCBTP;
 #else
@@ -155,7 +155,7 @@ static void CMU_FlashWaitStateControl(uint32_t hfcoreclk)
 
   cfg = MSC->READCTRL;
 
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   if (hfcoreclk > CMU_MAX_FREQ_1WS)
   {
     switch(cfg & _MSC_READCTRL_MODE_MASK)
@@ -177,7 +177,7 @@ static void CMU_FlashWaitStateControl(uint32_t hfcoreclk)
   {
     switch (cfg & _MSC_READCTRL_MODE_MASK)
     {
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
     case MSC_READCTRL_MODE_WS2SCBTP:
 #endif
     case MSC_READCTRL_MODE_WS0SCBTP:
@@ -195,7 +195,7 @@ static void CMU_FlashWaitStateControl(uint32_t hfcoreclk)
   {
     switch (cfg & _MSC_READCTRL_MODE_MASK)
     {
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
     case MSC_READCTRL_MODE_WS2SCBTP:
 #endif
     case MSC_READCTRL_MODE_WS1SCBTP:
@@ -314,7 +314,7 @@ static uint32_t CMU_DBGClkGet(void)
   {
   case cmuSelect_HFCLK:
     ret = SystemHFClockGet();
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
     /* Giant Gecko has an additional divider, not used by USBC */
     ret = ret / (1 + ((CMU->CTRL & _CMU_CTRL_HFCLKDIV_MASK) >>
                       _CMU_CTRL_HFCLKDIV_SHIFT));
@@ -362,7 +362,7 @@ static uint32_t CMU_LFClkGet(unsigned int lfClkBranch)
     break;
 
   case _CMU_LFCLKSEL_LFA_HFCORECLKLEDIV2:
-#if defined (_EFM32_GIANT_FAMILY)
+#if defined (_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
     /* Giant Gecko can use a /4 divider (and must if >32MHz) or HFLE is set */
     if(((CMU->HFCORECLKDIV & _CMU_HFCORECLKDIV_HFCORECLKLEDIV_MASK) == CMU_HFCORECLKDIV_HFCORECLKLEDIV_DIV4)||
        (CMU->CTRL & CMU_CTRL_HFLE))
@@ -379,7 +379,7 @@ static uint32_t CMU_LFClkGet(unsigned int lfClkBranch)
     break;
 
   case _CMU_LFCLKSEL_LFA_DISABLED:
-#if defined (_EFM32_GIANT_FAMILY) || defined (_EFM32_TINY_FAMILY)
+#if defined (_EFM32_GIANT_FAMILY) || defined (_EFM32_TINY_FAMILY) || defined(_EFM32_WONDER_FAMILY)
     /* Check LF Extended bit setting for ULFRCO clock */
     if(CMU->LFCLKSEL >> (_CMU_LFCLKSEL_LFAE_SHIFT + lfClkBranch * 4))
     {
@@ -499,7 +499,7 @@ uint32_t CMU_Calibrate(uint32_t HFCycles, CMU_Osc_TypeDef ref)
 }
 
 
-#if defined (_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined (_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
 /***************************************************************************//**
  * @brief
  *   Configure clock calibration
@@ -619,7 +619,7 @@ CMU_ClkDiv_TypeDef CMU_ClockDivGet(CMU_Clock_TypeDef clock)
 
   switch (divReg)
   {
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   case CMU_HFCLKDIV_REG:
     ret = 1 + ((CMU->CTRL & _CMU_CTRL_HFCLKDIV_MASK) >>
                _CMU_CTRL_HFCLKDIV_SHIFT);
@@ -657,10 +657,10 @@ CMU_ClkDiv_TypeDef CMU_ClockDivGet(CMU_Clock_TypeDef clock)
       break;
 #endif
 
-#if defined(_CMU_LFPRESC0_LCD_MASK)
+#if defined(_CMU_LFAPRESC0_LCD_MASK)
     case cmuClock_LCDpre:
       ret = (CMU_ClkDiv_TypeDef)(((CMU->LFAPRESC0 & _CMU_LFAPRESC0_LCD_MASK) >>
-                                  _CMU_LFAPRESC0_LCD_SHIFT) + cmuClkDiv_16);
+                                  _CMU_LFAPRESC0_LCD_SHIFT) + CMU_DivToLog2(cmuClkDiv_16));
       ret = CMU_Log2ToDiv(ret);
       break;
 #endif
@@ -683,7 +683,7 @@ CMU_ClkDiv_TypeDef CMU_ClockDivGet(CMU_Clock_TypeDef clock)
   case CMU_LFBPRESC0_REG:
     switch (clock)
     {
-#if defined(_CMU_LFPRESC0_LEUART0_MASK)
+#if defined(_CMU_LFBPRESC0_LEUART0_MASK)
     case cmuClock_LEUART0:
       ret = (CMU_ClkDiv_TypeDef)(((CMU->LFBPRESC0 & _CMU_LFBPRESC0_LEUART0_MASK) >>
                                   _CMU_LFBPRESC0_LEUART0_SHIFT));
@@ -691,7 +691,7 @@ CMU_ClkDiv_TypeDef CMU_ClockDivGet(CMU_Clock_TypeDef clock)
       break;
 #endif
 
-#if defined(_CMU_LFPRESC0_LEUART1_MASK)
+#if defined(_CMU_LFBPRESC0_LEUART1_MASK)
     case cmuClock_LEUART1:
       ret = (CMU_ClkDiv_TypeDef)(((CMU->LFBPRESC0 & _CMU_LFBPRESC0_LEUART1_MASK) >>
                                   _CMU_LFBPRESC0_LEUART1_SHIFT));
@@ -745,7 +745,7 @@ void CMU_ClockDivSet(CMU_Clock_TypeDef clock, CMU_ClkDiv_TypeDef div)
 
   switch (divReg)
   {
-#if defined (_EFM32_GIANT_FAMILY)
+#if defined (_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   case CMU_HFCLKDIV_REG:
     EFM_ASSERT((div>=cmuClkDiv_1) && (div<=cmuClkDiv_8));
 
@@ -835,7 +835,7 @@ void CMU_ClockDivSet(CMU_Clock_TypeDef clock, CMU_ClkDiv_TypeDef div)
       div = CMU_DivToLog2(div);
 
       CMU->LFAPRESC0 = (CMU->LFAPRESC0 & ~_CMU_LFAPRESC0_LCD_MASK) |
-                       ((div - cmuClkDiv_16) << _CMU_LFAPRESC0_LCD_SHIFT);
+                       ((div - CMU_DivToLog2(cmuClkDiv_16)) << _CMU_LFAPRESC0_LCD_SHIFT);
       break;
 #endif /* defined(LCD_PRESENT) */
 
@@ -1006,7 +1006,7 @@ uint32_t CMU_ClockFreqGet(CMU_Clock_TypeDef clock)
     case (CMU_HF_CLK_BRANCH << CMU_CLK_BRANCH_POS):
     {
       ret = SystemHFClockGet();
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
       /* Giant Gecko has an additional divider, not used by USBC */
       ret = ret / (1 + ((CMU->CTRL & _CMU_CTRL_HFCLKDIV_MASK) >>
                    _CMU_CTRL_HFCLKDIV_SHIFT));
@@ -1034,7 +1034,7 @@ uint32_t CMU_ClockFreqGet(CMU_Clock_TypeDef clock)
     case (CMU_HFPER_CLK_BRANCH << CMU_CLK_BRANCH_POS):
     {
       ret   = SystemHFClockGet();
-#if defined (_EFM32_GIANT_FAMILY)
+#if defined (_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
       /* Leopard/Giant Gecko has an additional divider */
       ret = ret / (1 + ((CMU->CTRL & _CMU_CTRL_HFCLKDIV_MASK) >>
                         _CMU_CTRL_HFCLKDIV_SHIFT));
@@ -1078,8 +1078,8 @@ uint32_t CMU_ClockFreqGet(CMU_Clock_TypeDef clock)
     case (CMU_LCDPRE_CLK_BRANCH << CMU_CLK_BRANCH_POS):
     {
       ret   = CMU_LFClkGet(CMU_LFA);
-      ret >>= (CMU->LFAPRESC0 & _CMU_LFAPRESC0_LCD_MASK) >>
-              _CMU_LFAPRESC0_LCD_SHIFT;
+      ret >>= ((CMU->LFAPRESC0 & _CMU_LFAPRESC0_LCD_MASK) >>
+              _CMU_LFAPRESC0_LCD_SHIFT) + CMU_DivToLog2(cmuClkDiv_16);
     } break;
 
     case (CMU_LCD_CLK_BRANCH << CMU_CLK_BRANCH_POS):
@@ -1196,20 +1196,20 @@ CMU_Select_TypeDef CMU_ClockSelectGet(CMU_Clock_TypeDef clock)
   case CMU_LFACLKSEL_REG:
     switch (CMU->LFCLKSEL & _CMU_LFCLKSEL_LFA_MASK)
     {
-    case _CMU_LFCLKSEL_LFA_LFRCO:
+    case CMU_LFCLKSEL_LFA_LFRCO:
       ret = cmuSelect_LFRCO;
       break;
 
-    case _CMU_LFCLKSEL_LFA_LFXO:
+    case CMU_LFCLKSEL_LFA_LFXO:
       ret = cmuSelect_LFXO;
       break;
 
-    case _CMU_LFCLKSEL_LFA_HFCORECLKLEDIV2:
+    case CMU_LFCLKSEL_LFA_HFCORECLKLEDIV2:
       ret = cmuSelect_CORELEDIV2;
       break;
 
     default:
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
       if (CMU->LFCLKSEL & _CMU_LFCLKSEL_LFAE_MASK)
       {
         ret = cmuSelect_ULFRCO;
@@ -1225,20 +1225,20 @@ CMU_Select_TypeDef CMU_ClockSelectGet(CMU_Clock_TypeDef clock)
   case CMU_LFBCLKSEL_REG:
     switch (CMU->LFCLKSEL & _CMU_LFCLKSEL_LFB_MASK)
     {
-    case _CMU_LFCLKSEL_LFB_LFRCO:
+    case CMU_LFCLKSEL_LFB_LFRCO:
       ret = cmuSelect_LFRCO;
       break;
 
-    case _CMU_LFCLKSEL_LFB_LFXO:
+    case CMU_LFCLKSEL_LFB_LFXO:
       ret = cmuSelect_LFXO;
       break;
 
-    case _CMU_LFCLKSEL_LFB_HFCORECLKLEDIV2:
+    case CMU_LFCLKSEL_LFB_HFCORECLKLEDIV2:
       ret = cmuSelect_CORELEDIV2;
       break;
 
     default:
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
       if (CMU->LFCLKSEL & _CMU_LFCLKSEL_LFBE_MASK)
       {
         ret = cmuSelect_ULFRCO;
@@ -1252,7 +1252,7 @@ CMU_Select_TypeDef CMU_ClockSelectGet(CMU_Clock_TypeDef clock)
     break;
 
   case CMU_DBGCLKSEL_REG:
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
     switch(CMU->CTRL & _CMU_CTRL_DBGCLK_MASK)
     {
     case CMU_CTRL_DBGCLK_AUXHFRCO:
@@ -1345,9 +1345,7 @@ void CMU_ClockSelectSet(CMU_Clock_TypeDef clock, CMU_Select_TypeDef ref)
   CMU_Osc_TypeDef osc    = cmuOsc_HFRCO;
   uint32_t        freq;
   uint32_t        selReg;
-  uint32_t        lfShift;
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
-  uint32_t        lfExtendedShift;
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   uint32_t        lfExtended = 0;
 #endif
   uint32_t        tmp;
@@ -1372,7 +1370,7 @@ void CMU_ClockSelectSet(CMU_Clock_TypeDef clock, CMU_Select_TypeDef ref)
     case cmuSelect_HFXO:
       select = CMU_CMD_HFCLKSEL_HFXO;
       osc    = cmuOsc_HFXO;
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
       /* Adjust HFXO buffer current for high frequencies, enable HFLE for */
       /* frequencies above 32MHz */
       if(SystemHFXOClockGet() > CMU_MAX_FREQ_HFLE)
@@ -1395,7 +1393,7 @@ void CMU_ClockSelectSet(CMU_Clock_TypeDef clock, CMU_Select_TypeDef ref)
       osc    = cmuOsc_HFRCO;
       break;
 
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
     case cmuSelect_ULFRCO:
       /* ULFRCO cannot be used as HFCLK  */
       EFM_ASSERT(0);
@@ -1429,20 +1427,6 @@ void CMU_ClockSelectSet(CMU_Clock_TypeDef clock, CMU_Select_TypeDef ref)
 
   case CMU_LFACLKSEL_REG:
   case CMU_LFBCLKSEL_REG:
-    if (selReg == CMU_LFACLKSEL_REG)
-    {
-      lfShift = _CMU_LFCLKSEL_LFA_SHIFT;
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
-      lfExtendedShift = _CMU_LFCLKSEL_LFAE_SHIFT;
-#endif
-    }
-    else
-    {
-      lfShift = _CMU_LFCLKSEL_LFB_SHIFT;
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
-      lfExtendedShift = _CMU_LFCLKSEL_LFBE_SHIFT;
-#endif
-    }
 
     switch (ref)
     {
@@ -1466,7 +1450,7 @@ void CMU_ClockSelectSet(CMU_Clock_TypeDef clock, CMU_Select_TypeDef ref)
       /* Ensure HFCORE to LE clocking is enabled */
       BITBAND_Peripheral(&(CMU->HFCORECLKEN0), _CMU_HFCORECLKEN0_LE_SHIFT, 1);
       tmp = _CMU_LFCLKSEL_LFA_HFCORECLKLEDIV2;
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
       /* If core frequency is > 32MHz on Giant/Leopard, enable HFLE and DIV4 */
       freq = SystemCoreClockGet();
       if(freq > CMU_MAX_FREQ_HFLE)
@@ -1481,7 +1465,7 @@ void CMU_ClockSelectSet(CMU_Clock_TypeDef clock, CMU_Select_TypeDef ref)
 #endif
       break;
 
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
     case cmuSelect_ULFRCO:
       /* ULFRCO is always enabled */
       tmp        = _CMU_LFCLKSEL_LFA_DISABLED;
@@ -1495,16 +1479,30 @@ void CMU_ClockSelectSet(CMU_Clock_TypeDef clock, CMU_Select_TypeDef ref)
       return;
     }
 
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
-    CMU->LFCLKSEL = (CMU->LFCLKSEL & ~((_CMU_LFCLKSEL_LFA_MASK | _CMU_LFCLKSEL_LFAE_MASK) << lfShift)) |
-                    (tmp << lfShift) | (lfExtended << lfExtendedShift);
-#else
-    CMU->LFCLKSEL = (CMU->LFCLKSEL & ~(_CMU_LFCLKSEL_LFA_MASK << lfShift)) |
-                    (tmp << lfShift);
-#endif
+
+    if (selReg == CMU_LFACLKSEL_REG)
+    {
+      #if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
+      CMU->LFCLKSEL = (CMU->LFCLKSEL & ~(_CMU_LFCLKSEL_LFA_MASK | _CMU_LFCLKSEL_LFAE_MASK) ) |
+                    (tmp << _CMU_LFCLKSEL_LFA_SHIFT) | (lfExtended << _CMU_LFCLKSEL_LFAE_SHIFT);
+      #else
+      CMU->LFCLKSEL = (CMU->LFCLKSEL & ~_CMU_LFCLKSEL_LFA_MASK) |
+                    (tmp << _CMU_LFCLKSEL_LFA_SHIFT);
+      #endif
+    }
+    else
+    {
+      #if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
+      CMU->LFCLKSEL = (CMU->LFCLKSEL & ~(_CMU_LFCLKSEL_LFB_MASK | _CMU_LFCLKSEL_LFBE_MASK) ) |
+                    (tmp << _CMU_LFCLKSEL_LFB_SHIFT) | (lfExtended << _CMU_LFCLKSEL_LFBE_SHIFT);
+      #else
+      CMU->LFCLKSEL = (CMU->LFCLKSEL & ~_CMU_LFCLKSEL_LFB_MASK) |
+                    (tmp << _CMU_LFCLKSEL_LFB_SHIFT);
+      #endif
+    }
     break;
 
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   case CMU_DBGCLKSEL_REG:
     switch(ref)
     {
@@ -1633,7 +1631,7 @@ void CMU_FreezeEnable(bool enable)
 }
 
 
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
 /***************************************************************************//**
  * @brief
  *   Get AUXHFRCO band in use.

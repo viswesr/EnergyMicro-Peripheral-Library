@@ -2,7 +2,7 @@
  * @file
  * @brief Verify that part specific main header files are supported and included
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -140,6 +140,12 @@ extern "C" {
 #include "efm32.h"
 #elif defined(EFM32TG222F8)
 #include "efm32.h"
+#elif defined(EFM32TG225F16)
+#include "efm32.h"
+#elif defined(EFM32TG225F32)
+#include "efm32.h"
+#elif defined(EFM32TG225F8)
+#include "efm32.h"
 #elif defined(EFM32TG230F16)
 #include "efm32.h"
 #elif defined(EFM32TG230F32)
@@ -157,6 +163,12 @@ extern "C" {
 #elif defined(EFM32TG822F32)
 #include "efm32.h"
 #elif defined(EFM32TG822F8)
+#include "efm32.h"
+#elif defined(EFM32TG825F16)
+#include "efm32.h"
+#elif defined(EFM32TG825F32)
+#include "efm32.h"
+#elif defined(EFM32TG825F8)
 #include "efm32.h"
 #elif defined(EFM32TG840F16)
 #include "efm32.h"
@@ -370,6 +382,8 @@ extern "C" {
 #include "efm32.h"
 #elif defined(EFM32LG995F256)
 #include "efm32.h"
+#elif defined(EFM32LG995F64)
+#include "efm32.h"
 /* EFR4 parts */
 #elif defined(EFR4D1080F256)
 #include "efr4.h"
@@ -396,6 +410,9 @@ extern "C" {
 
 #if defined(_EFM32_GIANT_FAMILY)
 /* Add EFM32 Giant and Leopard Gecko specifics here */
+#define _EFM_DEVICE /**< Energy Micro EFM-type microcontroller */
+#elif defined(_EFM32_WONDER_FAMILY)
+/* Add EFM32 Wonder Gecko specifics here */
 #define _EFM_DEVICE /**< Energy Micro EFM-type microcontroller */
 #elif defined(_EFM32_TINY_FAMILY)
 /* Add EFM32 Tiny Gecko specifics here */

@@ -2,7 +2,7 @@
  * @file
  * @brief Low Energy Timer (LETIMER) Peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -171,7 +171,6 @@ void LETIMER_CompareSet(LETIMER_TypeDef *letimer,
                         uint32_t value)
 {
   volatile uint32_t *compReg;
-  uint32_t          syncbusy;
 
   EFM_ASSERT(LETIMER_REF_VALID(letimer) &&
              LETIMER_COMP_REG_VALID(comp) &&
@@ -182,12 +181,10 @@ void LETIMER_CompareSet(LETIMER_TypeDef *letimer,
   {
   case 0:
     compReg  = &(letimer->COMP0);
-    syncbusy = LETIMER_SYNCBUSY_COMP0;
     break;
 
   case 1:
     compReg  = &(letimer->COMP1);
-    syncbusy = LETIMER_SYNCBUSY_COMP1;
     break;
 
   default:
@@ -197,7 +194,7 @@ void LETIMER_CompareSet(LETIMER_TypeDef *letimer,
 
 #if defined(_EFM32_GECKO_FAMILY)
   /* LF register about to be modified require sync. busy check */
-  LETIMER_Sync(letimer, syncbusy);
+  LETIMER_Sync(letimer, comp ? LETIMER_SYNCBUSY_COMP1 : LETIMER_SYNCBUSY_COMP0);
 #endif
 
   *compReg = value;

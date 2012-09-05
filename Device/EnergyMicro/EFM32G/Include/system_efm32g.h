@@ -1,13 +1,12 @@
 #include "efm32g_af_pins.h"
 #include "efm32g_af_ports.h"
-#include "efm32g_af_channels.h"
 #include "efm32g_prs_signals.h"
 
 /***************************************************************************//**
  * @file
  * @brief CMSIS Cortex-M3 System Layer for EFM32G devices.
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>

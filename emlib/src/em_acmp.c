@@ -2,7 +2,7 @@
  * @file
  * @brief Analog Comparator (ACMP) Peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -140,7 +140,7 @@ void ACMP_CapsenseInit(ACMP_TypeDef *acmp, const ACMP_CapsenseInit_TypeDef *init
 void ACMP_CapsenseChannelSet(ACMP_TypeDef *acmp, ACMP_Channel_TypeDef channel)
 {
   /* Make sure that only external channels are used */
-  EFM_ASSERT(channel < _ACMP_INPUTSEL_NEGSEL_1V25);
+  EFM_ASSERT(channel <= _ACMP_INPUTSEL_POSSEL_CH7);
 
   /* Set channel as positive channel in ACMP */
   SET_BIT_FIELD(acmp->INPUTSEL, _ACMP_INPUTSEL_POSSEL_MASK, channel,
@@ -216,7 +216,14 @@ void ACMP_Reset(ACMP_TypeDef *acmp)
 void ACMP_GPIOSetup(ACMP_TypeDef *acmp, uint32_t location, bool enable, bool invert)
 {
   /* Sanity checking of location */
-  EFM_ASSERT(location < 4);
+#if defined(_EFM32_GECKO_FAMILY) || defined(_EFM32_TINY_FAMILY)
+  EFM_ASSERT(location <= _ACMP_ROUTE_LOCATION_LOC3);
+#elif defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
+  EFM_ASSERT(location <= _ACMP_ROUTE_LOCATION_LOC2);
+#else
+#error Illegal pin location (ACMP).
+#endif
+
 
   /* Set GPIO inversion */
   SET_BIT_FIELD(acmp->CTRL, _ACMP_CTRL_GPIOINV_MASK, invert,
@@ -242,10 +249,16 @@ void ACMP_GPIOSetup(ACMP_TypeDef *acmp, uint32_t location, bool enable, bool inv
 void ACMP_ChannelSet(ACMP_TypeDef *acmp, ACMP_Channel_TypeDef negSel,
                      ACMP_Channel_TypeDef posSel)
 {
-  /* Make sure that only external channels are used as ACMP positive input */
-  EFM_ASSERT(posSel < _ACMP_INPUTSEL_NEGSEL_1V25);
-  /* Sanity checking of ACMP negative input */
-  EFM_ASSERT(negSel <= _ACMP_INPUTSEL_NEGSEL_VDD);
+  /* Sanity checking of ACMP inputs */
+  EFM_ASSERT(posSel <= _ACMP_INPUTSEL_POSSEL_CH7);
+
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY) || defined(_EFM32_WONDER_FAMILY)
+  EFM_ASSERT(negSel <= _ACMP_INPUTSEL_NEGSEL_DAC0CH1);
+#elif defined(_EFM32_GECKO_FAMILY)
+  EFM_ASSERT(negSel <= _ACMP_INPUTSEL_NEGSEL_CAPSENSE);
+#else
+#error Illegal negative input selection (ACMP).
+#endif
 
   acmp->INPUTSEL = (acmp->INPUTSEL & ~(_ACMP_INPUTSEL_POSSEL_MASK |
                                        _ACMP_INPUTSEL_NEGSEL_MASK))

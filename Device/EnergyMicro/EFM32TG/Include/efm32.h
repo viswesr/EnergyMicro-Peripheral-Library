@@ -9,7 +9,7 @@
  *          Add "#include "efm32.h" to your source files
  * @endverbatim
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  ******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -84,6 +84,15 @@
 #elif defined(EFM32TG222F8)
 #include "efm32tg222f8.h"
 
+#elif defined(EFM32TG225F16)
+#include "efm32tg225f16.h"
+
+#elif defined(EFM32TG225F32)
+#include "efm32tg225f32.h"
+
+#elif defined(EFM32TG225F8)
+#include "efm32tg225f8.h"
+
 #elif defined(EFM32TG230F16)
 #include "efm32tg230f16.h"
 
@@ -110,6 +119,15 @@
 
 #elif defined(EFM32TG822F8)
 #include "efm32tg822f8.h"
+
+#elif defined(EFM32TG825F16)
+#include "efm32tg825f16.h"
+
+#elif defined(EFM32TG825F32)
+#include "efm32tg825f32.h"
+
+#elif defined(EFM32TG825F8)
+#include "efm32tg825f8.h"
 
 #elif defined(EFM32TG840F16)
 #include "efm32tg840f16.h"

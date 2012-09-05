@@ -3,7 +3,7 @@
  * @brief CMSIS Cortex-M3 Peripheral Access Layer Header File
  *        for EFM EFM32G840F64
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  ******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -159,6 +159,12 @@ typedef enum IRQn
 #define __CM3_REV            0x200          /**< Cortex-M3 Core revision r2p0 */
 #define PRS_CHAN_COUNT       8              /**< Number of PRS channels */
 #define DMA_CHAN_COUNT       8              /**< Number of DMA channels */
+
+/** AF channels connect the different on-chip peripherals with the af-mux */
+#define AFCHAN_MAX           79
+#define AFCHANLOC_MAX        4
+/** Analog AF channels */
+#define AFACHAN_MAX          37
 
 /* Part number capabilities */
 
@@ -2731,7 +2737,6 @@ typedef struct
  * @{
  *****************************************************************************/
 
-#include "efm32g_af_channels.h"
 #include "efm32g_af_ports.h"
 #include "efm32g_af_pins.h"
 

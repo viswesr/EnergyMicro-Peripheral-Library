@@ -3,7 +3,7 @@
  * @brief Universal synchronous/asynchronous receiver/transmitter (USART/UART)
  *   Peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -71,18 +71,20 @@
 #error Undefined number of USARTs.
 #endif
 
+#if defined(USART0)
 #define USART_IRDA_VALID(ref)    ((ref) == USART0)
+#endif
 
 #if defined(_EFM32_TINY_FAMILY)
 #define USART_I2S_VALID(ref)     ((ref) == USART1)
 #endif
 
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
 #define USART_I2S_VALID(ref)    (((ref) == USART1) || ((ref) == USART2))
 #endif
 
 #if (UART_COUNT == 1)
-#define UART_REF_VALID(ref)     ((ref)==UART0) 
+#define UART_REF_VALID(ref)     ((ref)==UART0)
 #elif (UART_COUNT == 2)
 #define UART_REF_VALID(ref)     (((ref)==UART0) || ((ref)==UART1))
 #else
@@ -195,6 +197,12 @@ void USART_BaudrateAsyncSet(USART_TypeDef *usart,
   clkdiv /= (oversample * baudrate);
   clkdiv -= 4;
   clkdiv *= 64;
+
+  /* Verify that resulting clock divider is within limits */
+  EFM_ASSERT(clkdiv <= _USART_CLKDIV_MASK);
+
+  /* If EFM_ASSERT is not enabled, make sure we don't write to reserved bits */
+  clkdiv &= _USART_CLKDIV_MASK;
 
   usart->CTRL  &= ~_USART_CTRL_OVS_MASK;
   usart->CTRL  |= ovs;
@@ -532,7 +540,7 @@ void USART_InitAsync(USART_TypeDef *usart, const USART_InitAsync_TypeDef *init)
   /* Init USART registers to HW reset state. */
   USART_Reset(usart);
 
-#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
   /* Disable majority vote if specified. */
   if (init->mvdis)
   {
@@ -596,7 +604,7 @@ void USART_InitSync(USART_TypeDef *usart, const USART_InitSync_TypeDef *init)
                  ((uint32_t)init->clockMode) |
                  (init->msbf ? USART_CTRL_MSBF : 0);
 
-#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
   usart->CTRL |= (init->prsRxEnable ? USART_INPUT_RXPRS : 0) |
                  (init->autoTx      ? USART_CTRL_AUTOTX : 0);
 #endif
@@ -645,6 +653,7 @@ void USART_InitSync(USART_TypeDef *usart, const USART_InitSync_TypeDef *init)
  *   USART modules.
  *
  ******************************************************************************/
+#if defined(USART0)
 void USART_InitIrDA(const USART_InitIrDA_TypeDef *init)
 {
   /* Init USART0 as async device */
@@ -668,9 +677,10 @@ void USART_InitIrDA(const USART_InitIrDA_TypeDef *init)
   /* Enable IrDA */
   USART0->IRCTRL |= USART_IRCTRL_IREN;
 }
+#endif
 
 
-#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY) || defined(_EFM32_WONDER_FAMILY)  
 /***************************************************************************//**
  * @brief
  *   Init USART for I2S mode.
@@ -733,8 +743,8 @@ void USART_InitI2s(USART_TypeDef *usart, USART_InitI2s_TypeDef *init)
  * @brief
  *   Initialize automatic transmissions using PRS channel as trigger
  * @note
- *   Initialize USART with USART_Init() before setting up PRS configuration 
- * 
+ *   Initialize USART with USART_Init() before setting up PRS configuration
+ *
  * @param[in] usart Pointer to USART to configure
  * @param[in] init Pointer to initialization structure
  ******************************************************************************/
@@ -745,12 +755,12 @@ void USART_InitPrsTrigger(USART_TypeDef *usart, const USART_PrsTriggerInit_TypeD
   /* Clear values that will be reconfigured  */
   trigctrl = usart->TRIGCTRL & ~(_USART_TRIGCTRL_RXTEN_MASK|
                                  _USART_TRIGCTRL_TXTEN_MASK|
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
                                  _USART_TRIGCTRL_AUTOTXTEN_MASK|
 #endif
                                  _USART_TRIGCTRL_TSEL_MASK);
 
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
   if(init->autoTxTriggerEnable)
   {
     trigctrl |= USART_TRIGCTRL_AUTOTXTEN;
@@ -800,7 +810,7 @@ void USART_Reset(USART_TypeDef *usart)
     usart->IRCTRL = _USART_IRCTRL_RESETVALUE;
   }
 
-#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
   usart->INPUT = _USART_INPUT_RESETVALUE;
 
   if (USART_I2S_VALID(usart))
@@ -808,8 +818,6 @@ void USART_Reset(USART_TypeDef *usart)
     usart->I2SCTRL = _USART_I2SCTRL_RESETVALUE;
   }
 #endif
-
-  /* Do not reset route register, setting should be done independently */
 }
 
 

@@ -2,7 +2,7 @@
  * @file
  * @brief Reset Management Unit (RMU) peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -57,7 +57,7 @@ extern "C" {
 /** RMU controlled peripheral reset control and reset source control */
 typedef enum
 {
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
   /** Reset control over Backup Power Domain */
   rmuResetBU = _RMU_CTRL_BURSTEN_SHIFT,        
 #endif

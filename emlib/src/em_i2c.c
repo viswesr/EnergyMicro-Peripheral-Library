@@ -2,7 +2,7 @@
  * @file
  * @brief Inter-integrated Circuit (I2C) Peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -53,12 +53,13 @@
 
 /** @cond DO_NOT_INCLUDE_WITH_DOXYGEN */
 
-/** Validation of I2C register block pointer reference for assert statements. */
 #if defined(_EFM32_GECKO_FAMILY) || defined(_EFM32_TINY_FAMILY)
+/** Validation of I2C register block pointer reference for assert statements. */
 #define I2C_REF_VALID(ref)    ((ref) == I2C0)
 #endif
 
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
+/** Validation of I2C register block pointer reference for assert statements. */
 #define I2C_REF_VALID(ref)    ((ref == I2C0) || (ref == I2C1))
 #endif
 
@@ -214,15 +215,16 @@ void I2C_BusFreqSet(I2C_TypeDef *i2c,
   uint32_t n;
   uint32_t div;
 
-  /* Unused parameter */
-  (void)type;
-
   /* Avoid divide by 0 */
   EFM_ASSERT(freq);
   if (!freq)
   {
     return;
   }
+
+  /* Set the CLHR (clock low to high ratio). */
+  i2c->CTRL &= ~_I2C_CTRL_CLHR_MASK;
+  i2c->CTRL |= type <<_I2C_CTRL_CLHR_SHIFT;
 
   /* Frequency is given by fSCL = fHFPERCLK/((Nlow + Nhigh)(DIV + 1) + 4), thus */
   /* DIV = ((fHFPERCLK - 4fSCL)/((Nlow + Nhigh)fSCL)) - 1 */
@@ -290,11 +292,11 @@ void I2C_Init(I2C_TypeDef *i2c, const I2C_Init_TypeDef *init)
   i2c->IEN = 0;
   i2c->IFC = _I2C_IFC_MASK;
 
-  I2C_BusFreqSet(i2c, init->refFreq, init->freq, init->clhr);
-
   BITBAND_Peripheral(&(i2c->CTRL),
                      _I2C_CTRL_SLAVE_SHIFT,
                      ~((unsigned int)(init->master)));
+  
+  I2C_BusFreqSet(i2c, init->refFreq, init->freq, init->clhr);
 
   BITBAND_Peripheral(&(i2c->CTRL),
                      _I2C_CTRL_EN_SHIFT,

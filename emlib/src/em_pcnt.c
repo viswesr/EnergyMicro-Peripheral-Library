@@ -2,7 +2,7 @@
  * @file
  * @brief Pulse Counter (PCNT) peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -265,7 +265,7 @@ void PCNT_Enable(PCNT_TypeDef *pcnt, PCNT_Mode_TypeDef mode)
   pcnt->CTRL = tmp;
 }
 
-#if (defined (_EFM32_TINY_FAMILY) || defined (_EFM32_GIANT_FAMILY))
+#if (defined (_EFM32_TINY_FAMILY) || defined (_EFM32_GIANT_FAMILY) || defined (_EFM32_WONDER_FAMILY))
 /***************************************************************************//**
  * @brief
  *   Enable/disable the selected PRS input of PCNT.
@@ -417,7 +417,7 @@ void PCNT_Init(PCNT_TypeDef *pcnt, const PCNT_Init_TypeDef *init)
   /* Map pointer to instance */
   inst = PCNT_Map(pcnt);
 
-#if (defined (_EFM32_TINY_FAMILY) || defined (_EFM32_GIANT_FAMILY))
+#if (defined (_EFM32_TINY_FAMILY) || defined (_EFM32_GIANT_FAMILY) || defined (_EFM32_WONDER_FAMILY))
   /* Selecting the PRS channels for the PRS input sources of the PCNT. These are
    * written with a Read-Modify-Write sequence in order to keep the value of the
    * input enable bits which can be modified using PCNT_PRSInputEnable(). */
@@ -444,7 +444,7 @@ void PCNT_Init(PCNT_TypeDef *pcnt, const PCNT_Init_TypeDef *init)
     tmp |= PCNT_CTRL_FILT;
   }
 
-#if (defined (_EFM32_TINY_FAMILY) || defined (_EFM32_GIANT_FAMILY))
+#if (defined (_EFM32_TINY_FAMILY) || defined (_EFM32_GIANT_FAMILY) || defined (_EFM32_WONDER_FAMILY)) 
   if (init->hyst)
   {
     tmp |= PCNT_CTRL_HYST;

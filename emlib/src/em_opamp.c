@@ -2,7 +2,7 @@
  * @file
  * @brief Operational Amplifier (OPAMP) peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  ******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -372,9 +372,8 @@ void OPAMP_Enable( DAC_TypeDef *dac, OPAMP_TypeDef opa, const OPAMP_Init_TypeDef
     {
       EFM_ASSERT( init->offset <= ( _DAC_OPAOFFSET_OPA2OFFSET_MASK >> 
                                     _DAC_OPAOFFSET_OPA2OFFSET_SHIFT   ) );
-      
-      dac->CAL = ( dac->CAL      & ~_DAC_OPAOFFSET_OPA2OFFSET_MASK  ) |
-                 ( init->offset <<  _DAC_OPAOFFSET_OPA2OFFSET_SHIFT );        
+      dac->OPAOFFSET = ( dac->OPAOFFSET & ~_DAC_OPAOFFSET_OPA2OFFSET_MASK ) |
+                       ( init->offset <<  _DAC_OPAOFFSET_OPA2OFFSET_SHIFT );
     }
 
     dac->OPA2MUX  = (uint32_t)init->resSel                                |

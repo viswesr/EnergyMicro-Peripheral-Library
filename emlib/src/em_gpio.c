@@ -3,7 +3,7 @@
  * @brief General Purpose IO (GPIO) peripheral API
  *   devices.
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -218,8 +218,6 @@ unsigned int GPIO_PinInGet(GPIO_Port_TypeDef port, unsigned int pin)
  * @param[in] out
  *   Value to set for pin in DOUT register. The DOUT setting is important for
  *   even some input mode configurations, determining pull-up/down direction.
- *   Notice that this parameter is not used if disabling a pin, leaving the
- *   corresponding DOUT bit unchanged.
  ******************************************************************************/
 void GPIO_PinModeSet(GPIO_Port_TypeDef port,
                      unsigned int pin,

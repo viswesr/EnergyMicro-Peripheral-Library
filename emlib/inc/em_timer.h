@@ -2,7 +2,7 @@
  * @file
  * @brief Timer/counter (TIMER) peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -179,6 +179,7 @@ typedef enum
 } TIMER_Prescale_TypeDef;
 
 
+#if defined(ADC_PRESENT)
 /** Peripheral Reflex System signal. */
 typedef enum
 {
@@ -191,7 +192,7 @@ typedef enum
   timerPRSSELCh6 = _ADC_SINGLECTRL_PRSSEL_PRSCH6, /**< PRS channel 6. */
   timerPRSSELCh7 = _ADC_SINGLECTRL_PRSSEL_PRSCH7  /**< PRS channel 7. */
 } TIMER_PRSSEL_TypeDef;
-
+#endif
 
 /*******************************************************************************
  *******************************   STRUCTS   ***********************************
@@ -212,7 +213,7 @@ typedef struct
   /** Clock selection. */
   TIMER_ClkSel_TypeDef      clkSel;
 
-#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   /** 2x Count mode, counter increments/decrements by 2, meant for PWN mode. */
   bool                      count2x;
 
@@ -244,7 +245,7 @@ typedef struct
 } TIMER_Init_TypeDef;
 
 /** Default config for TIMER init structure. */
-#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_TINY_FAMILY) || defined(_EFM32_WONDER_FAMILY)
 #define TIMER_INIT_DEFAULT                                                              \
   { true,                   /* Enable timer when init complete. */                      \
     false,                  /* Stop counter during debug halt. */                       \

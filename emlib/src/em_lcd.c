@@ -2,7 +2,7 @@
  * @file
  * @brief Liquid Crystal Display (LCD) Peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -70,7 +70,7 @@ void LCD_Init(const LCD_Init_TypeDef *lcdInit)
 
   /* Make sure we don't touch other bit fields (i.e. voltage boost) */
   dispCtrl &= ~(
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
     _LCD_DISPCTRL_MUXE_MASK |
 #endif
     _LCD_DISPCTRL_MUX_MASK |
@@ -194,7 +194,9 @@ void LCD_AnimInit(const LCD_AnimInit_TypeDef *animInit)
   bactrl |= (animInit->BShift << _LCD_BACTRL_AREGBSC_SHIFT);
   bactrl |= animInit->animLogic;
 
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
+  bactrl &= ~(_LCD_BACTRL_ALOC_MASK);
+
   if(animInit->startSeg == 0)
   {
     bactrl |= LCD_BACTRL_ALOC_SEG0TO7;
@@ -257,7 +259,7 @@ void LCD_SegmentRangeEnable(LCD_SegmentRange_TypeDef segmentRange, bool enable)
  ******************************************************************************/
 void LCD_SegmentSet(int com, int bit, bool enable)
 {
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   /* Tiny and Giant Family supports up to 8 COM lines */
   EFM_ASSERT(com < 8);
 #else
@@ -265,7 +267,7 @@ void LCD_SegmentSet(int com, int bit, bool enable)
   EFM_ASSERT(com < 4);
 #endif
 
-#if defined(_EFM32_GECKO_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GECKO_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   EFM_ASSERT(bit < 40);
 #else
   /* Tiny Gecko Family supports only "low" segment registers */
@@ -280,7 +282,7 @@ void LCD_SegmentSet(int com, int bit, bool enable)
     {
       BITBAND_Peripheral(&(LCD->SEGD0L), bit, (unsigned int)enable);
     }
-#if defined(_EFM32_GECKO_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GECKO_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
     else
     {
       bit -= 32;
@@ -293,7 +295,7 @@ void LCD_SegmentSet(int com, int bit, bool enable)
     {
       BITBAND_Peripheral(&(LCD->SEGD1L), bit, (unsigned int)enable);
     }
-#if defined(_EFM32_GECKO_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GECKO_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
     else
     {
       bit -= 32;
@@ -306,7 +308,7 @@ void LCD_SegmentSet(int com, int bit, bool enable)
     {
       BITBAND_Peripheral(&(LCD->SEGD2L), bit, (unsigned int)enable);
     }
-#if defined(_EFM32_GECKO_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GECKO_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
     else
     {
       bit -= 32;
@@ -319,7 +321,7 @@ void LCD_SegmentSet(int com, int bit, bool enable)
     {
       BITBAND_Peripheral(&(LCD->SEGD3L), bit, (unsigned int)enable);
     }
-#if defined(_EFM32_GECKO_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GECKO_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
     else
     {
       bit -= 32;
@@ -328,13 +330,13 @@ void LCD_SegmentSet(int com, int bit, bool enable)
 #endif
     break;
   case 4:
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
     if (bit < 32)
     {
       BITBAND_Peripheral(&(LCD->SEGD4L), bit, (unsigned int)enable);
     }
 #endif
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
     else
     {
       bit -= 32;
@@ -343,13 +345,13 @@ void LCD_SegmentSet(int com, int bit, bool enable)
 #endif
     break;
   case 5:
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
     if (bit < 32)
     {
       BITBAND_Peripheral(&(LCD->SEGD5L), bit, (unsigned int)enable);
     }
 #endif
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
     else
     {
       bit -= 32;
@@ -358,13 +360,13 @@ void LCD_SegmentSet(int com, int bit, bool enable)
 #endif
     break;
   case 6:
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
     if (bit < 32)
     {
       BITBAND_Peripheral(&(LCD->SEGD6L), bit, (unsigned int)enable);
     }
 #endif
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
     else
     {
       bit -= 32;
@@ -373,13 +375,13 @@ void LCD_SegmentSet(int com, int bit, bool enable)
 #endif
     break;
   case 7:
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
     if (bit < 32)
     {
       BITBAND_Peripheral(&(LCD->SEGD7L), bit, (unsigned int)enable);
     }
 #endif
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
     else
     {
       bit -= 32;
@@ -414,7 +416,7 @@ void LCD_SegmentSetLow(int com, uint32_t mask, uint32_t bits)
   uint32_t segData;
 
   /* Maximum number of com lines */
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   EFM_ASSERT(com < 8);
 #else
   /* Gecko Family supports up to 4 COM lines */
@@ -447,7 +449,7 @@ void LCD_SegmentSetLow(int com, uint32_t mask, uint32_t bits)
     segData    |= (mask & bits);
     LCD->SEGD3L = segData;
     break;
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   case 4:
     segData     = LCD->SEGD4L;
     segData    &= ~(mask);
@@ -455,7 +457,7 @@ void LCD_SegmentSetLow(int com, uint32_t mask, uint32_t bits)
     LCD->SEGD4L = segData;
     break;
 #endif
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
   case 5:
     segData     = LCD->SEGD5L;
     segData    &= ~(mask);
@@ -463,7 +465,7 @@ void LCD_SegmentSetLow(int com, uint32_t mask, uint32_t bits)
     LCD->SEGD5L = segData;
     break;
 #endif
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   case 6:
     segData     = LCD->SEGD6L;
     segData    &= ~(mask);
@@ -471,7 +473,7 @@ void LCD_SegmentSetLow(int com, uint32_t mask, uint32_t bits)
     LCD->SEGD6L = segData;
     break;
 #endif
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   case 7:
     segData     = LCD->SEGD7L;
     segData    &= ~(mask);
@@ -486,7 +488,7 @@ void LCD_SegmentSetLow(int com, uint32_t mask, uint32_t bits)
 }
 
 
-#if defined(_EFM32_GECKO_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GECKO_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
 /***************************************************************************//**
  * @brief
  *   Updated the high (32-39) segments on a given COM-line in one operation
@@ -504,7 +506,7 @@ void LCD_SegmentSetHigh(int com, uint32_t mask, uint32_t bits)
 {
   uint32_t segData;
 
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   EFM_ASSERT(com < 8);
 #endif
 #if defined(_EFM32_GECKO_FAMILY)
@@ -538,7 +540,7 @@ void LCD_SegmentSetHigh(int com, uint32_t mask, uint32_t bits)
     segData    |= (mask & bits);
     LCD->SEGD3H = segData;
     break;
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   case 4:
     segData     = LCD->SEGD4H;
     segData    &= ~(mask);
@@ -546,7 +548,7 @@ void LCD_SegmentSetHigh(int com, uint32_t mask, uint32_t bits)
     LCD->SEGD4H = segData;
     break;
 #endif
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   case 5:
     segData     = LCD->SEGD5H;
     segData    &= ~(mask);
@@ -554,7 +556,7 @@ void LCD_SegmentSetHigh(int com, uint32_t mask, uint32_t bits)
     LCD->SEGD5H = segData;
     break;
 #endif
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   case 6:
     segData     = LCD->SEGD6H;
     segData    &= ~(mask);
@@ -562,7 +564,7 @@ void LCD_SegmentSetHigh(int com, uint32_t mask, uint32_t bits)
     LCD->SEGD6H = segData;
     break;
 #endif
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   case 7:
     segData     = LCD->SEGD7H;
     segData    &= ~(mask);
@@ -608,7 +610,7 @@ void LCD_VBoostSet(LCD_VBoostLevel_TypeDef vboost)
 }
 
 
-#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_TINY_FAMILY) || defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
 /***************************************************************************//**
  * @brief
  *   Configure bias level for a specific segment line for Direct Segment Control
@@ -637,7 +639,7 @@ void LCD_BiasSegmentSet(int segmentLine, int biasLevel)
 #if defined(_EFM32_TINY_FAMILY)
   EFM_ASSERT(segmentLine < 20);
 #endif
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY)
   EFM_ASSERT(segmentLine < 40);
 #endif
 #if defined(_EFM32_TINY_FAMILY)
@@ -665,7 +667,7 @@ void LCD_BiasSegmentSet(int segmentLine, int biasLevel)
     break;
   }
 #endif
-#if defined(_EFM32_GIANT_FAMILY)
+#if defined(_EFM32_GIANT_FAMILY) || defined(_EFM32_WONDER_FAMILY) 
   /* Bias config for 10 segment lines per SEGDn L+H registers */
   biasRegister = segmentLine / 10;
   bitShift     = (segmentLine % 10) * 4;

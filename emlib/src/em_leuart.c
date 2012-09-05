@@ -3,7 +3,7 @@
  * @brief Low Energy Universal Asynchronous Receiver/Transmitter (LEUART)
  *   Peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -315,6 +315,12 @@ void LEUART_BaudrateSet(LEUART_TypeDef *leuart,
   clkdiv -= 32;
   clkdiv *= 8;
 
+  /* Verify that resulting clock divider is within limits */
+  EFM_ASSERT(clkdiv <= _LEUART_CLKDIV_MASK);
+
+  /* If EFM_ASSERT is not enabled, make sure we don't write to reserved bits */
+  clkdiv &= _LEUART_CLKDIV_MASK;
+
   /* LF register about to be modified require sync. busy check */
   LEUART_Sync(leuart, LEUART_SYNCBUSY_CLKDIV);
 
@@ -446,7 +452,7 @@ void LEUART_FreezeEnable(LEUART_TypeDef *leuart, bool enable)
  * @param[in] init
  *   Pointer to initialization structure used to configure basic async setup.
  ******************************************************************************/
-void LEUART_Init(LEUART_TypeDef *leuart, LEUART_Init_TypeDef *init)
+void LEUART_Init(LEUART_TypeDef *leuart, LEUART_Init_TypeDef const *init)
 {
   /* Make sure the module exists on the selected chip */
   EFM_ASSERT(LEUART_REF_VALID(leuart));
@@ -504,7 +510,6 @@ void LEUART_Reset(LEUART_TypeDef *leuart)
   leuart->IFC        = _LEUART_IFC_MASK;
   leuart->PULSECTRL  = _LEUART_PULSECTRL_RESETVALUE;
   leuart->ROUTE      = _LEUART_ROUTE_RESETVALUE;
-  /* Do not reset route register, setting should be done independently */
 
   /* Unfreeze registers, pass new settings on to LEUART */
   LEUART_FreezeEnable(leuart, false);

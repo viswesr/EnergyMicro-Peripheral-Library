@@ -1,4 +1,10 @@
 ================ Revision history ============================================
+3.0.1:
+ - Part header files: Corrected resetvalue for CMU CTRL register
+ - Part header files: Added missing DMA channel registers for Giant family
+ - emlib: LFXO fix for Giant family.
+ - usb: Added more flexibility for taking advantage of energymodes in USB applications.
+
 3.0.0:
  - WARNING: This is a major update which reorganizes Energy Micro software.
    Peripheral APIs are kept intact, but you must update project-/makefiles

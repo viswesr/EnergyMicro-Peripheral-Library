@@ -2,7 +2,7 @@
  * @file
  * @brief Pulse Counter (PCNT) peripheral API
  * @author Energy Micro AS
- * @version 3.0.0
+ * @version 3.0.1
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2012 Energy Micro AS, http://www.energymicro.com</b>
@@ -71,7 +71,7 @@ typedef enum
 } PCNT_Mode_TypeDef;
 
 
-#if (defined (_EFM32_TINY_FAMILY) || defined (_EFM32_GIANT_FAMILY))
+#if (defined (_EFM32_TINY_FAMILY) || defined (_EFM32_GIANT_FAMILY) || defined (_EFM32_WONDER_FAMILY))
 /** Counter event selection.
  *  Note: unshifted values are being used for enumeration because multiple
  *  configuration structure members use this type definition. */
@@ -149,7 +149,7 @@ typedef struct
   /** Enable filter, only available in #pcntModeOvsSingle mode. */
   bool                  filter;
 
-#if (defined (_EFM32_TINY_FAMILY) || defined (_EFM32_GIANT_FAMILY))
+#if (defined (_EFM32_TINY_FAMILY) || defined (_EFM32_GIANT_FAMILY) || defined (_EFM32_WONDER_FAMILY))
   /** Set to true to enable hysteresis. When its enabled, the PCNT will always
    *  overflow and underflow to TOP/2. */
   bool                  hyst;
@@ -176,8 +176,8 @@ typedef struct
 #endif
 } PCNT_Init_TypeDef;
 
-/** Default config for PCNT init structure. */
 #if defined (_EFM32_GECKO_FAMILY)
+/** Default config for PCNT init structure. */
 #define PCNT_INIT_DEFAULT                                                           \
   { pcntModeDisable,                          /* Disabled by default. */            \
     _PCNT_CNT_RESETVALUE,                     /* Default counter HW reset value. */ \
@@ -186,7 +186,8 @@ typedef struct
     false,                                    /* Up-counting. */                    \
     false                                     /* Filter disabled. */                \
   }
-#elif (defined (_EFM32_TINY_FAMILY) || defined (_EFM32_GIANT_FAMILY))
+#elif (defined (_EFM32_TINY_FAMILY) || defined (_EFM32_GIANT_FAMILY) || defined (_EFM32_WONDER_FAMILY))
+/** Default config for PCNT init structure. */
 #define PCNT_INIT_DEFAULT                                                                        \
   { pcntModeDisable,                          /* Disabled by default. */                         \
     _PCNT_CNT_RESETVALUE,                     /* Default counter HW reset value. */              \
@@ -224,7 +225,7 @@ __STATIC_INLINE uint32_t PCNT_CounterGet(PCNT_TypeDef *pcnt)
 }
 
 
-#if (defined (_EFM32_TINY_FAMILY) || defined (_EFM32_GIANT_FAMILY))
+#if (defined (_EFM32_TINY_FAMILY) || defined (_EFM32_GIANT_FAMILY) || defined (_EFM32_WONDER_FAMILY))
 /***************************************************************************//**
  * @brief
  *   Get auxiliary counter value.
@@ -277,7 +278,7 @@ void PCNT_Enable(PCNT_TypeDef *pcnt, PCNT_Mode_TypeDef mode);
 void PCNT_FreezeEnable(PCNT_TypeDef *pcnt, bool enable);
 void PCNT_Init(PCNT_TypeDef *pcnt, const PCNT_Init_TypeDef *init);
 
-#if (defined (_EFM32_TINY_FAMILY) || defined (_EFM32_GIANT_FAMILY))
+#if (defined (_EFM32_TINY_FAMILY) || defined (_EFM32_GIANT_FAMILY) || defined (_EFM32_WONDER_FAMILY))
 void PCNT_PRSInputEnable(PCNT_TypeDef *pcnt,
                          PCNT_PRSInput_TypeDef prsInput,
                          bool enable);
